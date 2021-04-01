@@ -1,4 +1,4 @@
-package src;
+package mainpackage;
 
 public class Joueur {
 	String name;

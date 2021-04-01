@@ -1,4 +1,4 @@
-package src;
+package mainpackage;
 
 public class Pion {
 	int x;

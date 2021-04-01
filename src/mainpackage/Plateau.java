@@ -1,4 +1,4 @@
-package src;
+package mainpackage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,6 @@ public class Plateau {
 	}
 	
 	boolean placerPion(int x, int y) {
-		
+		return true;
 	}
 }
