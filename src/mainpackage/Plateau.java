@@ -1,28 +1,40 @@
 package mainpackage;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 public class Plateau {
-	List<ArrayList<Pion>> formes;
 	
-	Plateau(int nbCotes) {
-		this.formes = new ArrayList<ArrayList<Pion>>();
-			for(int i=1;i<=nbCotes;i++) {
-				ArrayList<Pion> forme = new ArrayList<Pion>();
-				for(int j=1;j<=nbCotes*2;j++) {
-					Pion pion = new Pion(i, j);
-					forme.add(pion);
-				}
-				this.formes.add(forme);
+	private Map<Coords,Joueur> lesPions;
+	private int type;
+	private int space;
+	
+	public Plateau(int t) {
+		this.type = t;
+		//if(t==3 || t==4);
+		for(int i=1; i<=t; i++) {
+			for(int j=1; j<=t*2; j++) {
+				lesPions.put(new Coords(i,j),null);
 			}
+		}
 	}
 	
-	boolean placeOccupee(int x, int y) {
-		return this.formes.get(x).get(y) == null;
+	public int getType() {
+		return this.type;
 	}
 	
-	boolean placerPion(int x, int y) {
-		return true;
+	public void ajoutJoueur() {
+		
 	}
+	
+	public String toString() {
+		if(this.type==4) {
+			this.space=1;
+			String affichage ="";
+			System.out.println(1 + "-----------");
+			return affichage;
+		}
+	}
+	
+	
 }
