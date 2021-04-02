@@ -1,9 +1,9 @@
 package mainpackage;
 
-public class Joueur {
+public class Player {
 	String name;
 	
-	Joueur(String name) {
+	Player(String name) {
 		this.name = name;
 	}
 }
