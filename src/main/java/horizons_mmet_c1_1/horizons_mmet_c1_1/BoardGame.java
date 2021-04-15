@@ -18,7 +18,7 @@ public class BoardGame {
 	public BoardGame(int t) throws IOException {
 		this.type = t;
 		
-		// Initilisation des cases qui seront plus tard occup�es par des pions
+		// Initilisation des cases qui seront plus tard occupées par des pions
 		
 		for(int i=1; i<=t; i++) {
 			for(int j=1; j<=t*2; j++) {
@@ -40,11 +40,13 @@ public class BoardGame {
 		int x = 0;
 		
 		for(String line : lines) {
-			String[] boolsOfLine = line.split(",");
-			int y = 0;
-			for(String boolStr : boolsOfLine) {
-				matriceAdjacence[x][y] = Boolean.getBoolean(boolStr);
-				y++;
+			if(x > 0) {
+				String[] boolsOfLine = line.substring(4).trim().split(",");
+				int y = 0;
+				for(String boolStr : boolsOfLine) {
+					matriceAdjacence[x][y] = Boolean.getBoolean(boolStr);
+					y++;
+				}
 			}
 			x++;
 		}
@@ -67,6 +69,10 @@ public class BoardGame {
 			return display;
 		}
 	}*/
+	
+	public static void main(String[] args) {
+		System.out.println("test !!");
+	}
 	
 	
 }
