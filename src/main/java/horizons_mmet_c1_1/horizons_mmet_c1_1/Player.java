@@ -6,4 +6,7 @@ public class Player {
 	Player(String name) {
 		this.name = name;
 	}
+	Player(){
+		this("J1");
+	}
 }

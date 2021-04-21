@@ -1,5 +1,7 @@
 package horizons_mmet_c1_1.horizons_mmet_c1_1;
 
+
+//Class inutile
 public class Coords {
 	int x;
 	int y;
