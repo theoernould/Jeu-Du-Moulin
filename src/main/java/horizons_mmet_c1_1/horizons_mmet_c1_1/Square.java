@@ -1,26 +1,21 @@
 package horizons_mmet_c1_1.horizons_mmet_c1_1;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-
 public class Square {
-	private int x;
-	private int y;
+	private final int X;
+	private final int Y;
 	
 	private Player player;
 	
-	//La matrice d'adjacence
-	//private static final boolean [][] MATRICE_ADJ;
-	
 	Square(int coordX, int coordY) {
-		this.x = coordX;
-		this.y = coordY;
+		this.X = coordX;
+		this.Y = coordY;
 	}
 	
-	public void addPlayer(Player p) {
-		this.player = p;
+	public boolean addPlayer(Player p) {
+		if(p != null && this.player == null) {
+			this.player = p;
+			return true;
+		} else return false;
 	}
 	
 	public Player removePlayer() {
@@ -28,41 +23,13 @@ public class Square {
 		this.player = null;
 		return toReturn;
 	}
-
-	/*public void constructionMatriceAdj(int typePlat){
-
-		Path path = Paths.get("src/main/" + typePlat + ".txt");
-		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
-		
-		int nbOfPoints = typePlat * 2 * typePlat;
-		
-		MATRICE_ADJ = new boolean[nbOfPoints][nbOfPoints];
 	
-		int x = 0;
-		
-		for(String line : lines) {
-			if(x > 0) {
-				String[] boolsOfLine = line.substring(4).trim().split(",");
-				int y = 0;
-				for(String boolStr : boolsOfLine) {
-					MATRICE_ADJ[x][y] = Boolean.getBoolean(boolStr);
-					y++;
-				}
-			}
-			x++;
-		}
-	}*/
-
-	
-	//Renvoie si oui ou non une case est voisine avec une autre
-	public boolean isNeighborWith(Square otherSquare, boolean[][] matriceAjd) {
-		
-		int ligne = (this.x - 1) * 6 + (this.y - 1);
-		int colonne = (otherSquare.x - 1) * 6 + (otherSquare.y - 1);
-		return matriceAjd[ligne][colonne];
-		
+	public void moveTo(Square s2) {
+		s2.addPlayer(this.removePlayer());
 	}
 	
-	
+	public String toString() {
+		return "(" + X + ", " + Y + ") " + player;
+	}
 	
 }

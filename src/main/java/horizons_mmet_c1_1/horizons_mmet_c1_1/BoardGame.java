@@ -5,39 +5,38 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BoardGame {
 	
-	
 	private ArrayList<Square> squares;
 	
 	private boolean[][] matriceAdjacence;
 	
-	private int type;
+	public static int type;
 	
 	public BoardGame(int t) throws IOException {
 		this.type = t;
-		//this.Pawns = new HashMap<>();
 		
 		// Initilisation des cases qui seront plus tard occupées par des pions
 		
-		for(int i=1; i<=t; i++) {
+		this.squares = new ArrayList<Square>();
+		
+		for(int i=1; i<=3; i++) {
 			for(int j=1; j<=t*2; j++) {
 				Square square = new Square(i,j);
 				this.squares.add(square);
-				
 			}
 		}
 		
 		// Initialisation de la matrice d'adjacence
-		//Cette fonction a été déplacée dans "Square"
 		
 		Path path = Paths.get("src/main/" + t + ".txt");
 		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
 		
-		int nbOfPoints = t * 2 * t;
+		int nbOfPoints = t * 2 * 3;
 		
 		matriceAdjacence = new boolean[nbOfPoints][nbOfPoints];
 	
@@ -47,8 +46,10 @@ public class BoardGame {
 			if(x > 0) {
 				String[] boolsOfLine = line.substring(4).trim().split(",");
 				int y = 0;
+				//System.out.println("taille x( " + x + ") : " + boolsOfLine.length);
 				for(String boolStr : boolsOfLine) {
-					matriceAdjacence[x][y] = Boolean.getBoolean(boolStr);
+					//System.out.println("x = " + x + " y = " + y);
+					matriceAdjacence[x-1][y] = Boolean.getBoolean(boolStr);
 					y++;
 				}
 			}
@@ -57,13 +58,32 @@ public class BoardGame {
 		
 	}
 	
-	public int getType() {
-		return this.type;
+	public static int getIndex(int x, int y) {
+		return (x - 1) * (type * 2) + (y - 1);
 	}
 	
-	public static void main(String[] args) {
+	public boolean placePawn(int x, int y, Player p) {
+		System.out.println("placement : " + x + " " + y + " : " + getIndex(x,y));
+		return squares.get(getIndex(x,y)).addPlayer(p);
+	}
+	
+	public boolean movePawn(int x1, int y1, int x2, int y2) {
+		return !squares.get(getIndex(x2,y2)).addPlayer(squares.get(getIndex(x1,y1)).removePlayer());
+	}
+	
+	//Renvoie si oui ou non une case est voisine avec une autre
+	public boolean squaresNeighbors(int x1, int y1, int x2, int y2) {
 		
 	}
 	
+	public boolean squaresAligned(int y1, int y2, int y3) {
+		
+	}
+	
+	public String toString() {
+		StringBuilder strBuilder = new StringBuilder();
+		for(Square s : squares) strBuilder.append(s + "\n");
+		return strBuilder.toString();
+	}
 	
 }

@@ -1,5 +1,7 @@
 package horizons_mmet_c1_1.horizons_mmet_c1_1;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -16,19 +18,24 @@ public class Horizons extends Application {
         stage.show();
 	}
 	
-	public static void main(String[] args) {
-	        Application.launch(args);
+	public static void main(String[] args) throws IOException {
+	        //Application.launch(args);
 	        
+	        // Demander type plateau
+	        
+	        int type = 3;
 
-			//Anciennes coords
-			int x = 1;
-			int y = 1;
+			BoardGame plateau = new BoardGame(type);
 			
-			//Demande de déplacement
-			int newX = 1;
-			int newY = 2;
+			Player p1 = new Player("Joueur 1");
+			Player p2 = new Player("Joueur 2");
 			
-			BoardGame plateau = new BoardGame(3);
+			
+			
+			System.out.println("placement : " + plateau.placePawn(1, 1, p1));
+			System.out.println("placement : " + plateau.placePawn(1, 1, p1));
+				
+			System.out.println(plateau);
 				
 	}
 

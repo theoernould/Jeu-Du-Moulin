@@ -10,4 +10,8 @@ public class Player {
 	Player(){
 		this("J1");
 	}
+	
+	public String toString() {
+		return name;
+	}
 }
