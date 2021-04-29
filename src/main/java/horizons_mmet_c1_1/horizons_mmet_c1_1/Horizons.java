@@ -18,6 +18,18 @@ public class Horizons extends Application {
 	
 	public static void main(String[] args) {
 	        Application.launch(args);
+	        
+
+			//Anciennes coords
+			int x = 1;
+			int y = 1;
+			
+			//Demande de déplacement
+			int newX = 1;
+			int newY = 2;
+			
+			BoardGame plateau = new BoardGame(3);
+				
 	}
 
 }

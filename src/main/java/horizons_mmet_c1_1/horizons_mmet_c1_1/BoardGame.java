@@ -10,7 +10,8 @@ import java.util.Map;
 
 public class BoardGame {
 	
-	private Map<Square,Player> Pawns;
+	
+	private ArrayList<Square> squares;
 	
 	private boolean[][] matriceAdjacence;
 	
@@ -24,8 +25,8 @@ public class BoardGame {
 		
 		for(int i=1; i<=t; i++) {
 			for(int j=1; j<=t*2; j++) {
-				Square coords = new Square(i,j);
-				this.Pawns.put(coords, new Player(null));
+				Square square = new Square(i,j);
+				this.squares.add(square);
 				
 			}
 		}
@@ -33,7 +34,7 @@ public class BoardGame {
 		// Initialisation de la matrice d'adjacence
 		//Cette fonction a été déplacée dans "Square"
 		
-		/*Path path = Paths.get("src/main/" + t + ".txt");
+		Path path = Paths.get("src/main/" + t + ".txt");
 		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
 		
 		int nbOfPoints = t * 2 * t;
@@ -52,33 +53,16 @@ public class BoardGame {
 				}
 			}
 			x++;
-		}*/
+		}
 		
 	}
-	
-	
-	
 	
 	public int getType() {
 		return this.type;
 	}
 	
-	
-	public void movePawn(Coords lastCoords, Coords newCoords) {
-		
-	}
-	
-	/*public String toString() {
-		if(this.type==4) {
-			this.space=1;
-			String display ="";
-			System.out.println(1 + "-----------");
-			return display;
-		}
-	}*/
-	
 	public static void main(String[] args) {
-		System.out.println("test !!");
+		
 	}
 	
 	
