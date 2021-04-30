@@ -13,19 +13,21 @@ public class BoardGame {
 	
 	private ArrayList<Square> squares;
 	
-	private boolean[][] matriceAdjacence;
+	//private boolean[][] matriceAdjacence;
 	
-	public static int type;
+	public int nbSides;
+	public int nbShapes;
 	
-	public BoardGame(int t) throws IOException {
-		this.type = t;
+	public BoardGame(int sides, int shapes) throws IOException {
+		this.nbSides = sides;
+		this.nbShapes = shapes;
 		
 		// Initilisation des cases qui seront plus tard occupées par des pions
 		
 		this.squares = new ArrayList<Square>();
 		
-		for(int i=1; i<=3; i++) {
-			for(int j=1; j<=t*2; j++) {
+		for(int i=1; i<=nbShapes; i++) {
+			for(int j=1; j<=nbSides*2; j++) {
 				Square square = new Square(i,j);
 				this.squares.add(square);
 			}
@@ -33,7 +35,7 @@ public class BoardGame {
 		
 		// Initialisation de la matrice d'adjacence
 		
-		Path path = Paths.get("src/main/" + t + ".txt");
+		/*Path path = Paths.get("src/main/" + t + ".txt");
 		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
 		
 		int nbOfPoints = t * 2 * 3;
@@ -54,16 +56,16 @@ public class BoardGame {
 				}
 			}
 			x++;
-		}
+		}*/
 		
 	}
 	
-	public static int getIndex(int x, int y) {
-		return (x - 1) * (type * 2) + (y - 1);
+	public int getIndex(int x, int y) {
+		return (x - 1) * (nbSides * 2) + (y - 1);
 	}
 	
 	public boolean placePawn(int x, int y, Player p) {
-		System.out.println("placement : " + x + " " + y + " : " + getIndex(x,y));
+		//System.out.println("placement : " + x + " " + y + " : " + getIndex(x,y));
 		return squares.get(getIndex(x,y)).addPlayer(p);
 	}
 	
@@ -73,12 +75,12 @@ public class BoardGame {
 	
 	//Renvoie si oui ou non une case est voisine avec une autre
 	public boolean squaresNeighbors(int x1, int y1, int x2, int y2) {
-		
+		return ( y1 == y2 && Math.abs(x2 - x1) == 1 ) || ( x1 == x2 && (Math.abs( ( y2 % (nbSides * 2) ) - ( y1 % (nbSides * 2) ) ) == 1) );
 	}
 	
-	public boolean squaresAligned(int y1, int y2, int y3) {
+	/*public boolean squaresAligned(int y1, int y2, int y3) {
 		
-	}
+	}*/
 	
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
