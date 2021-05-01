@@ -1,10 +1,11 @@
 package horizons_mmet_c1_1.horizons_mmet_c1_1;
 
 public class Square {
+	
 	private final int X;
 	private final int Y;
-	
 	private Player player;
+	
 	
 	Square(int coordX, int coordY) {
 		this.X = coordX;
