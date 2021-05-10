@@ -12,9 +12,14 @@ public class Square {
 		this.Y = coordY;
 	}
 	
+	private boolean squareOccuped() {
+		return this.player == null;
+	}
+	
 	public boolean addPlayer(Player p) {
-		if(p != null && this.player == null) {
+		if(p != null && !squareOccuped() && p.canPlacePawn()) {
 			this.player = p;
+			this.player.placePawn();
 			return true;
 		} else return false;
 	}
@@ -25,8 +30,8 @@ public class Square {
 		return toReturn;
 	}
 	
-	public void moveTo(Square s2) {
-		s2.addPlayer(this.removePlayer());
+	public boolean moveTo(Square s2) {
+		return s2.addPlayer(this.removePlayer());
 	}
 	
 	public String toString() {

@@ -12,11 +12,12 @@ import java.util.Map;
 public class BoardGame {
 	
 	private ArrayList<Square> squares;
+	private int roundNum = 0;
 	
 	//private boolean[][] matriceAdjacence;
 	
-	public int nbSides;
-	public int nbShapes;
+	private int nbSides;
+	private int nbShapes;
 	
 	public BoardGame(int sides, int shapes) throws IOException {
 		this.nbSides = sides;
@@ -69,8 +70,13 @@ public class BoardGame {
 		return squares.get(getIndex(x,y)).addPlayer(p);
 	}
 	
+	public boolean movePawnAbsolute(int x1, int y1, int x2, int y2) {
+		return !squares.get(getIndex(x2,y2)).moveTo(squares.get(getIndex(x1,y1)));
+	}
+	
 	public boolean movePawn(int x1, int y1, int x2, int y2) {
-		return !squares.get(getIndex(x2,y2)).addPlayer(squares.get(getIndex(x1,y1)).removePlayer());
+		if(!squaresNeighbors(x1, y1, x2, y2)) return false;
+		else return movePawnAbsolute(x1, y1, x2, y2);
 	}
 	
 	//Renvoie si oui ou non une case est voisine avec une autre
@@ -82,7 +88,25 @@ public class BoardGame {
 		
 	}*/
 	
-	public String toString() {
+	public String advancedDisplay() {
+		StringBuilder display = new StringBuilder();
+		int sideVoids = 16;
+		for(int i=0;i<sideVoids+1;i++,sideVoids--) {
+			String line = "";
+			for(int y=0;y<sideVoids;y++) {
+				line += " ";
+			}
+			if( (sideVoids <= 8 && sideVoids%2 == 0) || (sideVoids > 8 && sideVoids%4 == 0) ) {
+				line += "0";
+			} else {
+				line += "/";
+			}
+			display.append(line + "\n");
+		}
+		return display.toString();
+	}
+	
+	public String primaryDisplay() {
 		StringBuilder strBuilder = new StringBuilder();
 		for(Square s : squares) strBuilder.append(s + "\n");
 		return strBuilder.toString();

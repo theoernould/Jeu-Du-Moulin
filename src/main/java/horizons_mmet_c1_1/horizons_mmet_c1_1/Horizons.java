@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class Horizons extends Application {
 	private static Scanner scanner = new Scanner(System.in);
-	private static final int DELAY = 50;
+	private static final int DELAY = 10;
 	
 	public void start(Stage stage) {
         BorderPane root = new BorderPane();
@@ -56,10 +56,10 @@ public class Horizons extends Application {
 			BoardGame plateau = new BoardGame(nbSides, nbShapes);
 			
 			while(true) {
-				System.out.println(plateau);
-				System.out.println("Que voulez vous faire ?\n\t1. Placer un pion\n\t2. Déplacer un pion");
+				System.out.println(plateau.advancedDisplay());
+				System.out.println("Que voulez vous faire ?\n\t1. Placer un pion (pions restants : " + p1.pawnsLeft() + ")\n\t2. Déplacer un pion");
 				int choice = scanner.nextInt();
-				if(choice == 1) {
+				if(choice == 1 && p1.canPlacePawn()) {
 					System.out.print("Veuillez entrer les coordonnées :\nx : ");
 					int x = scanner.nextInt();
 					System.out.print("y : ");
@@ -76,6 +76,8 @@ public class Horizons extends Application {
 					System.out.print("y : ");
 					int y2 = scanner.nextInt();
 					plateau.movePawn(x1, y1, x2, y2);
+				} else {
+					System.out.println("Impossible");
 				}
 			}
 				
