@@ -55,6 +55,8 @@ public class Horizons extends Application {
 
 			BoardGame plateau = new BoardGame(nbSides, nbShapes);
 			
+			GameSteps etape = GameSteps.PLACEMENT;
+			
 			while(true) {
 				System.out.println(plateau.advancedDisplay());
 				System.out.println("Que voulez vous faire ?\n\t1. Placer un pion (pions restants : " + p1.pawnsLeft() + ")\n\t2. Déplacer un pion");

@@ -5,16 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BoardGame {
 	
-	private ArrayList<Square> squares;
-	private int roundNum = 0;
-	
-	//private boolean[][] matriceAdjacence;
+	private Square[][] squares;
 	
 	private int nbSides;
 	private int nbShapes;
@@ -25,53 +19,29 @@ public class BoardGame {
 		
 		// Initilisation des cases qui seront plus tard occupées par des pions
 		
-		this.squares = new ArrayList<Square>();
+		this.squares = new Square[shapes][sides*2];
 		
-		for(int i=1; i<=nbShapes; i++) {
-			for(int j=1; j<=nbSides*2; j++) {
-				Square square = new Square(i,j);
-				this.squares.add(square);
+		for(int i=0; i<nbShapes; i++) {
+			for(int j=0; j<nbSides*2; j++) {
+				Square square = new Square(i+1,j+1);
+				this.squares[i][j] = square;
 			}
 		}
 		
-		// Initialisation de la matrice d'adjacence
-		
-		/*Path path = Paths.get("src/main/" + t + ".txt");
-		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
-		
-		int nbOfPoints = t * 2 * 3;
-		
-		matriceAdjacence = new boolean[nbOfPoints][nbOfPoints];
-	
-		int x = 0;
-		
-		for(String line : lines) {
-			if(x > 0) {
-				String[] boolsOfLine = line.substring(4).trim().split(",");
-				int y = 0;
-				//System.out.println("taille x( " + x + ") : " + boolsOfLine.length);
-				for(String boolStr : boolsOfLine) {
-					//System.out.println("x = " + x + " y = " + y);
-					matriceAdjacence[x-1][y] = Boolean.getBoolean(boolStr);
-					y++;
-				}
-			}
-			x++;
-		}*/
-		
 	}
 	
-	public int getIndex(int x, int y) {
+	/*public int getIndex(int x, int y) {
 		return (x - 1) * (nbSides * 2) + (y - 1);
-	}
+	}*/
 	
 	public boolean placePawn(int x, int y, Player p) {
-		//System.out.println("placement : " + x + " " + y + " : " + getIndex(x,y));
-		return squares.get(getIndex(x,y)).addPlayer(p);
+		return squares[x-1][y-1].addPlayer(p);
+		//return squares.get(getIndex(x,y)).addPlayer(p);
 	}
 	
 	public boolean movePawnAbsolute(int x1, int y1, int x2, int y2) {
-		return !squares.get(getIndex(x2,y2)).moveTo(squares.get(getIndex(x1,y1)));
+		return !squares[x2-1][y2-1].moveTo(squares[x1-1][y1-1]);
+		//return !squares.get(getIndex(x2,y2)).moveTo(squares.get(getIndex(x1,y1)));
 	}
 	
 	public boolean movePawn(int x1, int y1, int x2, int y2) {
@@ -88,19 +58,24 @@ public class BoardGame {
 		
 	}*/
 	
-	public String advancedDisplay() {
+	public String advancedDisplay() throws IOException {
 		StringBuilder display = new StringBuilder();
-		int sideVoids = 16;
-		for(int i=0;i<sideVoids+1;i++,sideVoids--) {
-			String line = "";
-			for(int y=0;y<sideVoids;y++) {
-				line += " ";
+		Path file = Paths.get("src/main/triangle.txt");
+		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file);
+		for(String line_ : lines) {
+			String line = line_;
+			for(int i=0;i<line.length();i++) {
+				char car = line.charAt(i);
+				if(Character.isLetter(car)) {
+					int alphabetIndex = ((int) (car - 'A'));
+					int x = (int) Math.ceil(alphabetIndex/(nbSides*2));
+					int y = alphabetIndex % (nbSides*2);
+					System.out.println("remplace " + car + " en " + squares[x][y].getPlayerNumber());
+					line.replace("" + car, "" + squares[x][y].getPlayerNumber());
+					//System.out.println(car + " x=" + x + " y=" + y);
+				}
 			}
-			if( (sideVoids <= 8 && sideVoids%2 == 0) || (sideVoids > 8 && sideVoids%4 == 0) ) {
-				line += "0";
-			} else {
-				line += "/";
-			}
+			System.out.println(line);
 			display.append(line + "\n");
 		}
 		return display.toString();
@@ -108,7 +83,11 @@ public class BoardGame {
 	
 	public String primaryDisplay() {
 		StringBuilder strBuilder = new StringBuilder();
-		for(Square s : squares) strBuilder.append(s + "\n");
+		for(int x=0;x<squares.length;x++) {
+			for(int y=0;y<squares[x].length;y++) {
+				strBuilder.append(squares[x][y] + "\n");
+			}
+		}
 		return strBuilder.toString();
 	}
 	

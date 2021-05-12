@@ -5,6 +5,7 @@ public class Player {
 	private String name;
 	private int placedPawns = 0;
 	private static final int PAWNS_NUMBER = 3;
+	public int number = 1;
 	
 	public Player(String name) {
 		this.name = name;

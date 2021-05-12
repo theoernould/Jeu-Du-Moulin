@@ -16,6 +16,12 @@ public class Square {
 		return this.player == null;
 	}
 	
+	public int getPlayerNumber() {
+		if(this.player == null) {
+			return 0;
+		} else return this.player.number;
+	}
+	
 	public boolean addPlayer(Player p) {
 		if(p != null && !squareOccuped() && p.canPlacePawn()) {
 			this.player = p;
