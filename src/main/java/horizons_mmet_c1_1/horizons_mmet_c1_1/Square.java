@@ -7,7 +7,7 @@ public class Square {
 	private Player player;
 	
 	
-	Square(int coordX, int coordY) {
+	public Square(int coordX, int coordY) {
 		this.X = coordX;
 		this.Y = coordY;
 	}
