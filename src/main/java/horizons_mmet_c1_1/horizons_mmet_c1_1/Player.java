@@ -5,7 +5,7 @@ public class Player {
 	private String name;
 	private int placedPawns = 0;
 	private static final int PAWNS_NUMBER = 3;
-	public int number;
+	public final int number;
 	private static int incrementNumber = 1;
 	private final boolean IA;
 	
@@ -44,7 +44,7 @@ public class Player {
 	
 	/**Méthode d'affichage*/
 	public String toString() {
-		return this.name;
+		return this.name + "(" + number + ")";
 	}
 
 
