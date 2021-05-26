@@ -7,7 +7,7 @@ public class Square {
 	private Player player;
 	
 	
-	Square(int coordX, int coordY) {
+	public Square(int coordX, int coordY) {
 		this.X = coordX;
 		this.Y = coordY;
 	}
@@ -17,9 +17,8 @@ public class Square {
 	}
 	
 	public int getPlayerNumber() {
-		if(this.player == null) {
-			return 0;
-		} else return this.player.number;
+		if(this.player == null) return 0;
+		else return this.player.number;
 	}
 	
 	public boolean addPlayer(Player p) {
@@ -30,7 +29,7 @@ public class Square {
 	}
 
 	public boolean playerIs(Player p) {
-		return this.player.equals(p);
+		return squareOccuped() && this.player.equals(p);
 	}
 	
 	public Player removePlayer() {
@@ -49,6 +48,11 @@ public class Square {
 	
 	public String toString() {
 		return "(" + X + ", " + Y + ") " + player;
+	}
+
+	/**Getteur playeur*/
+	public Player getPlayeur(){
+		return this.player;
 	}
 	
 }

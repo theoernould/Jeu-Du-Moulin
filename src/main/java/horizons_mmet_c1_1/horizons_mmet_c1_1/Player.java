@@ -1,3 +1,5 @@
+
+
 package horizons_mmet_c1_1.horizons_mmet_c1_1;
 
 public class Player {
@@ -45,6 +47,11 @@ public class Player {
 	/**Méthode d'affichage*/
 	public String toString() {
 		return this.name + "(" + number + ")";
+	}
+
+	/**Getteur PlacedPawn*/
+	public int getPlacedPawn(){
+		return this.placedPawns;
 	}
 
 

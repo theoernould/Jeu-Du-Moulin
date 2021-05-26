@@ -9,6 +9,7 @@ public class Player_IT  implements Iterator<Player>{
 
     private List<Player> lesJoueurs;
     private int idx;
+    
 
     /**Constructeur de l'itérateur*/
     public Player_IT(List<Player> joueurs){
@@ -20,6 +21,7 @@ public class Player_IT  implements Iterator<Player>{
 
     public void search(){
         idx ++;
+       
         if(!hasNext()){
             idx = 0;
         }
@@ -38,6 +40,10 @@ public class Player_IT  implements Iterator<Player>{
        search();
        return p;
 
+    }
+    /**Getteur LesJoueurs*/
+    public List<Player> getLesJoueurs(){
+        return this.lesJoueurs;
     }
 
 } 

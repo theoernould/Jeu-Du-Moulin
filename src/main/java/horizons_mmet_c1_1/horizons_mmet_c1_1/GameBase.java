@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class GameBase {
 
 	private static Scanner scanner = new Scanner(System.in);
-	private static final int DELAY = 10;
+	private static final int DELAY = 50;
 
 	/**Algo principal de jeu avec les actions*/
 	public static void game()throws Exception,IOException, InterruptedException {
@@ -19,14 +19,18 @@ public class GameBase {
 		Thread.sleep(1000);
 
 		int nb = GameBase.numberPlayer();
-		
+
 		List<Player> joueurs = new ArrayList<Player>();
 		
 		if(nb == 1) {
 			joueurs.add(GameBase.createPlayer("Joueur"));
 			joueurs.add(GameBase.createPlayer());
 		}else {
-			for(int i=1;i<=nb;i++) joueurs.add(GameBase.createPlayer("Joueur " + i));
+			scanner.nextLine();
+			for(int i=1;i<=nb;i++) {
+				joueurs.add(GameBase.createPlayer("Joueur " + i));
+				Thread.sleep(500);
+			}
 		}
 
 		Iterator<Player> it = new Player_IT(joueurs);
@@ -35,12 +39,18 @@ public class GameBase {
 
 		GameBase.generationAleatoire(plateau, joueurs);
 
-		while(true) {
+		Player gagnant = null;
+		
+		while(gagnant == null) {
 			
 			showPlate(plateau);
 			action(plateau, it.next());
+			gagnant = plateau.gameWon(joueurs);
 
 		}
+		
+		System.out.println(gagnant + "  a gagné la partie ! GG :D" );
+		
 	}
 
 	/**Crée le plateau de jeu selon les entrées*/             
@@ -78,7 +88,7 @@ public class GameBase {
 
 		Utils.progressivePrint("Pseudo du " + name +  " ?\n", DELAY);
 
-		return new Player(scanner.next(), false);
+		return new Player(scanner.nextLine(), false);
 	}
 
 	/**Crée par défaut un joueur nommé IA*/
@@ -115,6 +125,7 @@ public class GameBase {
 	/**Execute les méthodes selon les choix d'actions du joueur*/
 	public static void action(BoardGame plateau, Player p) {
 		int choice;
+
 		if(p.pawnsLeft() > 0) {
 			System.out.println(p + " : " + "que voulez vous faire ?\n\t1. Placer un pion (pions restants : " + p.pawnsLeft() + ")");
 			choice = Utils.entrerInt(1,1);
@@ -124,12 +135,16 @@ public class GameBase {
 				// rien
 			}
 		} else {
-			System.out.println(p + " : " + "que voulez vous faire ?\n\t1. Déplacer un pion\n\t2. Placer un piège");
-			choice = Utils.entrerInt(1,2);
-			if(choice == 1) {
-				while(!actionMovePawn(plateau,p)) System.out.println("Impossible de déplacer le pion !");
-			} else if(choice == 2) {
-				// Pas encore de pièges !
+			if(!p.isIA()){
+				System.out.println(p + " : " + "que voulez vous faire ?\n\t1. Déplacer un pion\n\t2. Placer un piège");
+				choice = Utils.entrerInt(1,2);
+				if(choice == 1) {
+					while(!actionMovePawn(plateau,p)) System.out.println("Impossible de déplacer le pion !");
+				} else if(choice == 2) {
+					// Pas encore de pièges !
+				}
+			}else{
+				
 			}
 		}
 	}
