@@ -11,6 +11,7 @@ public class Player {
 	private static int incrementNumber = 1;
 	private final boolean IA;
 	
+	
 	/**Contructeur d'un joueur avec un nom et la condition d'un vrai joueur ou IA*/
 	public Player(String name, boolean ia) {
 		this.name = name;

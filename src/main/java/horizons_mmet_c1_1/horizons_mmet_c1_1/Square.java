@@ -49,10 +49,5 @@ public class Square {
 	public String toString() {
 		return "(" + X + ", " + Y + ") " + player;
 	}
-
-	/**Getteur playeur*/
-	public Player getPlayeur(){
-		return this.player;
-	}
 	
 }

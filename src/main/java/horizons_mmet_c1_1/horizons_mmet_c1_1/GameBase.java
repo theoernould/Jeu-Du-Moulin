@@ -13,31 +13,101 @@ public class GameBase {
 
 	/**Algo principal de jeu avec les actions*/
 	public static void game()throws Exception,IOException, InterruptedException {
+		
+		BoardGame plateau = null;
+		List<Player> joueurs = null;
+		
+		/*boolean display = true;
+		
+		Menus menuActuel = Menus.PRINCIPAL;
+		
+		while(display) {
+			
+			menuActuel = GameBase.menu(menuActuel);
+			
+			OptionsMenu choix = GameBase.menu(menuActuel);
+			
+			if(choix == OptionsMenu.JOUER) {
+				
+				menuActuel = Menus.JOUER;
+				
+				if(choix == OptionsMenu.CONTINUER) {
+					
+					// Chargement à partir de la sauvegarde
+					
+				} else if(choix == OptionsMenu.NOUVELLE) {
+					
+					menuActuel = Menus.NOUVELLE;
+					
+					if(choix == OptionsMenu.RIEN) {
 
-		BoardGame plateau = GameBase.createBoardGame();
+						plateau = GameBase.createBoardGame();
+
+						Thread.sleep(1000);
+
+						int nb = GameBase.numberPlayer();
+
+						joueurs = new ArrayList<Player>();
+
+						scanner.nextLine();
+						if(nb == 1) {
+							joueurs.add(GameBase.createPlayer("Joueur"));
+							joueurs.add(GameBase.createPlayer());
+						}else {
+							for(int i=1;i<=nb;i++) {
+								joueurs.add(GameBase.createPlayer("Joueur " + i));
+								Thread.sleep(500);
+							}
+						}
+
+						Thread.sleep(1000);
+
+						GameBase.generationAleatoire(plateau, joueurs);
+						
+					} else if(choix == OptionsMenu.CONFIGURATION) {
+						
+						// Démarre une partie à partir d'un fichier de configuration
+						
+					}
+				} else if(choix == OptionsMenu.RETOUR) {
+					
+				}
+				
+			} else if(choix == OptionsMenu.REGLES) {
+				
+				choix = GameBase.menu(Menus.REGLES);
+				
+			} else if(choix == OptionsMenu.QUITTER) {
+				
+				display = false;
+				
+			}
+		}*/
+
+		plateau = GameBase.createBoardGame();
 
 		Thread.sleep(1000);
 
 		int nb = GameBase.numberPlayer();
 
-		List<Player> joueurs = new ArrayList<Player>();
-		
+		joueurs = new ArrayList<Player>();
+
+		scanner.nextLine();
 		if(nb == 1) {
 			joueurs.add(GameBase.createPlayer("Joueur"));
 			joueurs.add(GameBase.createPlayer());
 		}else {
-			scanner.nextLine();
 			for(int i=1;i<=nb;i++) {
 				joueurs.add(GameBase.createPlayer("Joueur " + i));
 				Thread.sleep(500);
 			}
 		}
 
-		Iterator<Player> it = new Player_IT(joueurs);
-
 		Thread.sleep(1000);
 
 		GameBase.generationAleatoire(plateau, joueurs);
+
+		Iterator<Player> it = new Player_IT(joueurs);
 
 		Player gagnant = null;
 		
@@ -52,6 +122,49 @@ public class GameBase {
 		System.out.println(gagnant + "  a gagné la partie ! GG :D" );
 		
 	}
+	
+	public static OptionsMenu menu(Menus menu) {
+		return Utils.afficherMenu(menu.getTitle(), menu.getOptions());
+	}
+	
+	/*public static OptionsMenu menuPrincipal() {
+		OptionsMenu[] options = new OptionsMenu[] {
+			OptionsMenu.JOUER,
+			OptionsMenu.REGLES,
+			OptionsMenu.QUITTER
+		};
+		return Utils.afficherMenu("Bienvenue sur LineUp 3 !", options);
+	}
+	
+	
+	public static OptionsMenu menuJouer() {
+		OptionsMenu[] options = new OptionsMenu[] {
+				OptionsMenu.CONTINUER,
+				OptionsMenu.NOUVELLE,
+				OptionsMenu.RETOUR
+			};
+			return Utils.afficherMenu(, options);
+	}
+	
+	
+	public static OptionsMenu menuNouvelle() {
+		OptionsMenu[] options = new OptionsMenu[] {
+				OptionsMenu.RIEN,
+				OptionsMenu.CONFIGURATION
+			};
+			return Utils.afficherMenu("Comment démarrer la nouvelle partie", options);
+	}
+	
+	public static OptionsMenu menuRegles() {
+		System.out.println("Règles");
+			System.out.println("Déplacez les pions");
+			System.out.println("Poser des pièges");
+			System.out.println("Déplacez les pions");
+			System.out.println("Déplacez les pions");
+		System.out.println("Entrez 1 pour retourner au menu principal");
+		int choix = Utils.entrerInt(1, 1);
+		return OptionsMenu.RETOUR;
+	}*/
 
 	/**Crée le plateau de jeu selon les entrées*/             
 	public static BoardGame createBoardGame() throws Exception {
@@ -75,11 +188,11 @@ public class GameBase {
 	/**Retourne le nombre de joueur saisit par l'utilisateur*/
 	public static int numberPlayer()throws IOException, InterruptedException {
 
-		Utils.progressivePrint("Combien de joueurs ? (entre 1 et 9)\n" , DELAY);
+		Utils.progressivePrint("Combien de joueurs ? (entre 1 et 4)\n" , DELAY);
 
 		Thread.sleep(1000);
 
-		return Utils.entrerInt(1, 9);
+		return Utils.entrerInt(1, 4);
 	}
 	
 
@@ -125,6 +238,9 @@ public class GameBase {
 	/**Execute les méthodes selon les choix d'actions du joueur*/
 	public static void action(BoardGame plateau, Player p) {
 		int choice;
+		Square[] tabCases;
+		int randCase;
+		
 
 		if(p.pawnsLeft() > 0) {
 			System.out.println(p + " : " + "que voulez vous faire ?\n\t1. Placer un pion (pions restants : " + p.pawnsLeft() + ")");
@@ -144,7 +260,22 @@ public class GameBase {
 					// Pas encore de pièges !
 				}
 			}else{
+				System.out.println("Au tour de l'IA de jouer !");
+				tabCases =  plateau.playerPawns(p);
 				
+				int x;
+				int y;
+				
+				do{
+					randCase = Utils.random(0, 3);
+					x = tabCases[randCase].X;
+					y = tabCases[randCase].Y;
+
+				}while(!plateau.IcanMove( x, y, p));
+				
+				while(!plateau.movePawn(x, y, x + Utils.random(-1,2), y + Utils.random(-1,2), p)) {
+					
+				};
 			}
 		}
 	}

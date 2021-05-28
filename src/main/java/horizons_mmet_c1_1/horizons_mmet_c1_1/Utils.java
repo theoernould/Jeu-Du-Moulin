@@ -46,4 +46,12 @@ public class Utils {
 		}
 		return x;
 	}
+	
+	public static OptionsMenu afficherMenu(String title, OptionsMenu[] options) {
+		System.out.println(title);
+		for(int i=0;i<options.length;i++) System.out.println("\t" + (i+1) + ". " + options[i]);
+		System.out.println("Que voulez-vous faire ?");
+		int choice = Utils.entrerInt(1, options.length);
+		return options[choice-1];
+	}
 }

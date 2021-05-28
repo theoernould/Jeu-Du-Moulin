@@ -44,22 +44,26 @@ public class BoardGame {
 	public Player gameWon(List<Player> players) {
 		//System.out.println("GAME WON FUNCTION");
 		for(Player p : players) {
-			Square[] pawns = new Square[3];
-			int i = 0;
-			for(int x=0;x<nbShapes;x++) {
-				for(int y=0;y<nbSides*2;y++) {
-					Square square = squares[x][y];
-					/*System.out.println(square);
-					System.out.println(p);*/
-					if(square.playerIs(p)) {
-						pawns[i] = square;
-						i++;
-					}
-				}
-			}
+			Square[] pawns = playerPawns(p);
 			if(alignement(pawns[0],pawns[1],pawns[2])) return p;
 		}
 		return null;
+	}
+	
+	//**Retourne un tableau contenant les cases occupées du joueur passé en paramètre*/
+	public Square[] playerPawns(Player p) {
+		Square[] pawns = new Square[3];
+		int i = 0;
+		for(int x=0;x<nbShapes;x++) {
+			for(int y=0;y<nbSides*2;y++) {
+				Square square = squares[x][y];
+				if(square.playerIs(p)) {
+					pawns[i] = square;
+					i++;
+				}
+			}
+		}
+		return pawns;
 	}
 
 	/**
@@ -128,6 +132,14 @@ public class BoardGame {
 		return ( y1 == y2 && Math.abs(x2 - x1) == 1 ) || ( x1 == x2 && (Math.abs( ( y2 % (nbSides * 2) ) - ( y1 % (nbSides * 2) ) ) == 1) );
 	}
 	
+	/**Retourne si oui ou non le joueur peut se déplacer aux cases voisines*/
+	public boolean IcanMove(int x, int y, Player p){
+		if(movePawn(x, y, x-1, y, p) || movePawn(x, y, x+1, y, p) || movePawn(x, y, x, y-1, p) || movePawn(x,y, x, y+1, p)){
+			return true;
+		}
+		return false;
+	}
+
 	/*public boolean squaresAligned(int y1, int y2, int y3) {
 		
 	}*/

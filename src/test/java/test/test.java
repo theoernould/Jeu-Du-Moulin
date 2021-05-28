@@ -2,30 +2,48 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.Test;
 
 import horizons_mmet_c1_1.horizons_mmet_c1_1.BoardGame;
-import horizons_mmet_c1_1.horizons_mmet_c1_1.Lines;
 import horizons_mmet_c1_1.horizons_mmet_c1_1.Player;
+import horizons_mmet_c1_1.horizons_mmet_c1_1.Utils;
 import horizons_mmet_c1_1.horizons_mmet_c1_1.Square;
 
 class testTest {
 	
 	/**Classe de test*/
-	
-	int x = 0;
-	int y = 0;
-	public Player playerTest = new Player();
-	public Player playerTest2 = new Player();
-	public Square squareTest = new Square(x,y);
 
-	/**Test de la classe BoardGame*/
+	/**Test des voisins et alignements*/
 	@Test
-	public void BoardGameTest() {
-		/* int testsides = 3;
-		int testshapes = 6;
-		BoardGame testb = new BoardGame(testsides,testshapes);
-		isBetween() / pawnExist() / movePawn() */
+	public void BoardGameTest() throws IOException{
+		BoardGame terrain = new BoardGame(3,3);
+		//exist() :
+			//triangle :
+			assertTrue(terrain.squaresNeighbors(1,1,1,6));
+			assertTrue(terrain.squaresNeighbors(1,6,1,1));//comparer dans les 2 sens
+			assertFalse(terrain.squaresNeighbors(1,6,1,2));//qui marche pas : 1.6 et 1.2
+			// carré :
+			assertTrue(terrain.squaresNeighbors(1,1,1,8));
+			assertTrue(terrain.squaresNeighbors(1,8,1,1));//comparer dans les 2 sens
+			assertFalse(terrain.squaresNeighbors(1,8,1,2));//qui marche pas : 1.6 et 1.2
+						
+		//alignement() :
+			//fonctionne :
+			Square sA1 = new Square(1,1);
+			Square sA2 = new Square(1,2);
+			Square sA3 = new Square(1,3);
+			assertTrue(terrain.alignement(sA1,sA2,sA3));
+			Square sA4 = new Square(3,2);
+			Square sA5 = new Square(2,2);
+			Square sA6 = new Square(1,2);
+			assertTrue(terrain.alignement(sA4,sA5,sA6));
+			//fonctionne pas :
+			Square sA7 = new Square(3,2);
+			Square sA8 = new Square(3,3);
+			Square sA9 = new Square(3,4);
+		 	assertFalse(terrain.alignement(sA7,sA8,sA9));
 	}
 	
 	/**Test de la classe Player*/
@@ -35,56 +53,34 @@ class testTest {
 		Player testp = new Player();
 		testp.placePawn();
 		assertTrue(testp.getPlacedPawn()>0);
-		//canPlacePawn();
+	}
+	
+	/**Test de la classe Utils*/
+	@Test
+	public void UtilsTest() {
+		int a = 1; int b = 2; int c = 3; int d = a;
+		assertTrue(Utils.isBetween(b, a, c));
+		assertFalse(Utils.isBetween(a, b, c));
+		assertTrue(Utils.isBetween(d, a, c));
+		int min = 10; int max = 100;
+		int testr = Utils.random(min, max);
+		assertTrue(testr >= 10);
+		assertTrue(testr <= 100);
+		assertFalse(testr < 10);
+		assertFalse(testr > 100);
 	}
 
-	/**Test de la classe Player_IT*/
+	/**Test de la condition de victoire*/
 	@Test
-	public void Player_ITTest() {
+	public void WinTest() {
+		
 		//test condition de victoire
 	}
 	
-	/**Test de la classe Square*/
+	/**Test des pièges*/
 	@Test
-	public void SquareTest() {
-		/* int x = 0; 
-		int y = 0;
-		Square tests = new Square(x,y);
-		tests.getPlayeur(); */
-	}
-
-	/**Test de la classe Lines*/
-	//va peut-être migrer dans BoardGame et donc dans BoardGameTest
-    @Test
-	public void LinesTest() {
-		Lines testl = new Lines();
-		BoardGame terrain = new BoardGame(3,3);
-		//exist() :
-			//triangle :
-			Square s1 = new Square(1,1);
-			Square s2 = new Square(1,6);
-			/* carré :
-				s1 = 1.1
-				s2 = 1.8 */
-			Square s2 = new Square(1,2); //pour les 2 plateaux
-			//comparer dans les 2 sens
-			//qui marche pas : 1.6 et 1.2
-		//alignement() :
-			/*1.1
-			1.2
-			1.3
-				3.2
-				2.2
-				1.2
-			fonctionne pas :
-			3.2
-			3.3
-			3.4
-				*/
-
+	public void TrapTest(){
+		//test des pièges
 	}
 
 }
-
-/* Important :
-	voisinage / alignement / fin de partie / pose des pièges */
