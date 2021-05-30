@@ -17,74 +17,62 @@ public class GameBase {
 		BoardGame plateau = null;
 		List<Player> joueurs = null;
 		
-		/*boolean display = true;
+		boolean display = true;
 		
 		Menus menuActuel = Menus.PRINCIPAL;
 		
 		while(display) {
-			
-			menuActuel = GameBase.menu(menuActuel);
-			
 			OptionsMenu choix = GameBase.menu(menuActuel);
 			
-			if(choix == OptionsMenu.JOUER) {
-				
-				menuActuel = Menus.JOUER;
-				
-				if(choix == OptionsMenu.CONTINUER) {
+			switch(choix) {
+				case JOUER:
+					menuActuel = Menus.JOUER;
+					break;
 					
-					// Chargement à partir de la sauvegarde
-					
-				} else if(choix == OptionsMenu.NOUVELLE) {
-					
-					menuActuel = Menus.NOUVELLE;
-					
-					if(choix == OptionsMenu.RIEN) {
+					case CONTINUER:
+						menuActuel = Menus.CONTINUER;
+						break;
+					case NOUVELLE:
+						menuActuel = Menus.NOUVELLE;
+						case RIEN:
 
-						plateau = GameBase.createBoardGame();
+							plateau = GameBase.createBoardGame();
 
-						Thread.sleep(1000);
+							Thread.sleep(1000);
 
-						int nb = GameBase.numberPlayer();
+							int nb = GameBase.numberPlayer();
 
-						joueurs = new ArrayList<Player>();
+							joueurs = new ArrayList<Player>();
 
-						scanner.nextLine();
-						if(nb == 1) {
-							joueurs.add(GameBase.createPlayer("Joueur"));
-							joueurs.add(GameBase.createPlayer());
-						}else {
-							for(int i=1;i<=nb;i++) {
-								joueurs.add(GameBase.createPlayer("Joueur " + i));
-								Thread.sleep(500);
+							scanner.nextLine();
+							if(nb == 1) {
+								joueurs.add(GameBase.createPlayer("Joueur"));
+								joueurs.add(GameBase.createPlayer());
+							}else {
+								for(int i=1;i<=nb;i++) {
+									joueurs.add(GameBase.createPlayer("Joueur " + i));
+									Thread.sleep(500);
+								}
 							}
-						}
 
-						Thread.sleep(1000);
+							Thread.sleep(1000);
 
-						GameBase.generationAleatoire(plateau, joueurs);
-						
-					} else if(choix == OptionsMenu.CONFIGURATION) {
-						
-						// Démarre une partie à partir d'un fichier de configuration
-						
-					}
-				} else if(choix == OptionsMenu.RETOUR) {
-					
-				}
-				
-			} else if(choix == OptionsMenu.REGLES) {
-				
-				choix = GameBase.menu(Menus.REGLES);
-				
-			} else if(choix == OptionsMenu.QUITTER) {
-				
-				display = false;
-				
+							GameBase.generationAleatoire(plateau, joueurs);
+							display = false;
+							break;
+						case CONFIGURATION:
+							
+							break;
+				case REGLES:
+					menuActuel = Menus.REGLES;
+					break;
+				case QUITTER:
+					display = false;
+					break;
 			}
-		}*/
+		}
 
-		plateau = GameBase.createBoardGame();
+		/*plateau = GameBase.createBoardGame();
 
 		Thread.sleep(1000);
 
@@ -105,7 +93,7 @@ public class GameBase {
 
 		Thread.sleep(1000);
 
-		GameBase.generationAleatoire(plateau, joueurs);
+		GameBase.generationAleatoire(plateau, joueurs);*/
 
 		Iterator<Player> it = new Player_IT(joueurs);
 
