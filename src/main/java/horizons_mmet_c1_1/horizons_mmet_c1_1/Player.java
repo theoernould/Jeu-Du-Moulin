@@ -54,6 +54,14 @@ public class Player {
 	public int getPlacedPawn(){
 		return this.placedPawns;
 	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public int getNumber() {
+		return number;
+	}
 
 
 }

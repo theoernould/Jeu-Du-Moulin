@@ -10,5 +10,15 @@ public class Trap extends Square {
 		this.x2 = x2;
 		this.y2 = y2;
 	}
-	
+	public void tpTrap(Square S1){
+		int x2= (int) (Math.random()*3);
+		int y2= (int) (Math.random()*3);
+		Square S2= new Square(x2,y2);
+		while((x2==S1.X && y2==S1.Y) || S2.getPlayerNumber()!=0){
+			x2= (int) (Math.random()*3);
+			y2= (int) (Math.random()*3);
+			S2= new Square(x2,y2);
+		}
+		S1.moveTo(S2);
+	}
 }

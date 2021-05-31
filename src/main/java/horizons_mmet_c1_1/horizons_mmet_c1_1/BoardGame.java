@@ -15,7 +15,10 @@ public class BoardGame {
 	private int nbSides;
 	private int nbShapes;
 	
-	/**Constructeur de BoardGame*/
+	/**Constructeur de BoardGame
+	* @param sides nombre de côtés du plateau à créer
+	* @param shapes nombre de formes du plateau à créer
+	* @return BoardGame un plateau avec sides côteés et shapes formes*/
 	public BoardGame(int sides, int shapes) throws IOException {
 		this.nbSides = sides;
 		this.nbShapes = shapes;
@@ -33,24 +36,30 @@ public class BoardGame {
 		
 	}
 	
+	/**Accesseur du nombre de côtés du plateau*/
 	public int getNbSides() {
 		return nbSides;
 	}
-	
+
+	/**Accesseur du nombre de formes du plateau*/
 	public int getNbShapes() {
 		return nbShapes;
 	}
 	
+	/**Retourne le joueur gagnant
+	 * @param players l'ensemble des joueurs*/
 	public Player gameWon(List<Player> players) {
 		//System.out.println("GAME WON FUNCTION");
 		for(Player p : players) {
 			Square[] pawns = playerPawns(p);
-			if(alignement(pawns[0],pawns[1],pawns[2])) return p;
+			if(!p.canPlacePawn() && alignement(pawns[0],pawns[1],pawns[2])) return p;
 		}
 		return null;
 	}
 	
-	//**Retourne un tableau contenant les cases occupées du joueur passé en paramètre*/
+	/**Donne les cases occupées par un joueur
+	* @param p joueur dont on veut savoir ses pions
+	* @return Square[] un tableau de cases */
 	public Square[] playerPawns(Player p) {
 		Square[] pawns = new Square[3];
 		int i = 0;
@@ -67,17 +76,23 @@ public class BoardGame {
 	}
 
 	/**
-	 * 
-	 * @param x Coordonnées en x
-	 * @param y Coordonnées en y
-	 * @return
+	 * Indique si une case existe 
+	 * @param x Coordonnées en x de la case 
+	 * @param y Coordonnées en y de la case
+	 * @return boolean 
 	 */
 	public boolean pawnExist(int x, int y) {
-		return Utils.isBetween(x, 0, squares.length) && Utils.isBetween(y, 0, squares[0].length);
+		return Utils.isBetween(x, 0, squares.length-1) && Utils.isBetween(y, 0, squares[0].length-1);
 	}
 
+	/**
+	 * @param s1 case 1
+	 * @param s2 case 2
+	 * @param s3 case 3
+	 *
+	 */
     public boolean alignement(Square s1, Square s2, Square s3) {
-        if(s1.X==s2.X && s2.X==s3.X){
+       /* if(s1.X==s2.X && s2.X==s3.X){
             if((s1.Y%2==0 && s2.Y%2!=0 && s3.Y%2!=0)){
                 return true;
             }else if((s1.Y%2!=0 && s2.Y%2==0 && s3.Y%2!=0)){
@@ -91,7 +106,8 @@ public class BoardGame {
             return true;
         }else{
             return false;
-        }
+        }*/
+    	return ( ( squaresNeighbors(s1.X, s1.Y, s2.X, s2.Y) && squaresNeighbors(s2.X, s2.Y, s3.X, s3.Y) ) && ( ( (s1.X == s2.X && s2.X == s3.X) && ( (s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1) ) ) || ( (s1.Y == s2.Y && s2.Y == s3.Y) && ( (s1.X % 2 == 1) && (s2.X % 2 == 0) && (s3.X % 2 == 1) ) ) ) );
     }
 
 
@@ -115,26 +131,33 @@ public class BoardGame {
 	}
 	
 	public boolean movePawn(int x1, int y1, int x2, int y2, Player p) {
-		System.out.println("pion 1 existe ? " + pawnExist(x1, y1));
-		System.out.println("pion 2 existe ? " + pawnExist(x2, y2));
-		System.out.println("pion 1 occupé ? " + squares[x1][y1].squareOccuped());
-		System.out.println("pion 2 occupé ? " + squares[x2][y2].squareOccuped());
-		System.out.println("pions voisins ? " + squaresNeighbors(x1, y1, x2, y2));
-		if( ( !pawnExist(x1, y1) || !pawnExist(x2,y2) ) || !squares[x1][y1].squareOccuped() || squares[x2][y2].squareOccuped() || !squaresNeighbors(x1+1, y1+1, x2+1, y2+1) || !squares[x1][y1].playerIs(p)) return false;
-		else {
+		/*System.out.println("Coords 1 : " + x1 + " " + y1);
+		System.out.println("existe ? " + pawnExist(x1,y1));
+		if(pawnExist(x1,y1)) System.out.println("occupé ? " + squares[x1][y1].squareOccuped());
+		System.out.println("bon joueur ?" + squares[x1][y1].playerIs(p));
+		System.out.println("Coords 2 : " + x2 + " " + y2);
+		System.out.println("existe ? " + pawnExist(x1,y1));
+		if(pawnExist(x1,y1)) System.out.println("occupé ? " + squares[x2][y2].squareOccuped());
+		System.out.println("voisins ? " + squaresNeighbors(x1+1, y1+1, x2+1, y2+1));
+		System.out.println("--------");*/
+		if( pawnExist(x1, y1) && pawnExist(x2,y2) && squares[x1][y1].squareOccuped() && !squares[x2][y2].squareOccuped() && squaresNeighbors(x1+1, y1+1, x2+1, y2+1) && squares[x1][y1].playerIs(p)) {
 			System.out.println("move absolute");
 			return movePawnAbsolute(x1, y1, x2, y2);
-		}
+		} else return false;
 	}
 	
 	/**Renvoie si oui ou non une case est voisine avec une autre*/
 	public boolean squaresNeighbors(int x1, int y1, int x2, int y2) {
-		return ( y1 == y2 && Math.abs(x2 - x1) == 1 ) || ( x1 == x2 && (Math.abs( ( y2 % (nbSides * 2) ) - ( y1 % (nbSides * 2) ) ) == 1) );
+		/*System.out.println(x1 + " " + y1 + " | " + x2 + " " + y2);
+		System.out.println(( y1 == y2 && Math.abs(x2 - x1) == 1 && y1 % 2 == 0 && y2 % 2 == 0 ));
+		System.out.println( x1 == x2 && (Math.abs( ( y2 % (nbSides * 2) ) - ( y1 % (nbSides * 2) ) ) == 1) );
+		System.out.println(Math.abs( ( y2 % (nbSides * 2) ) - ( y1 % (nbSides * 2) ) ));*/
+		return ( y1 == y2 && Math.abs(x2 - x1) == 1 && y1 % 2 == 0 && y2 % 2 == 0 ) || ( x1 == x2 && (Math.abs( ( y2 % (nbSides * 2) ) - ( y1 % (nbSides * 2) ) ) != 0) );
 	}
 	
 	/**Retourne si oui ou non le joueur peut se déplacer aux cases voisines*/
-	public boolean IcanMove(int x, int y, Player p){
-		if(movePawn(x, y, x-1, y, p) || movePawn(x, y, x+1, y, p) || movePawn(x, y, x, y-1, p) || movePawn(x,y, x, y+1, p)){
+	public boolean IcanMove(int x, int y){
+		if(squaresNeighbors(x, y, x-1, y) || squaresNeighbors(x, y, x+1, y) || squaresNeighbors(x, y, x, y-1) || squaresNeighbors(x,y, x, y+1)){
 			return true;
 		}
 		return false;
