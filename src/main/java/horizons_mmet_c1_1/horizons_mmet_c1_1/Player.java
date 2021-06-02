@@ -20,6 +20,13 @@ public class Player {
 		incrementNumber++;
 	}
 	
+	public Player(String name, int number, boolean ia) {
+		this.name = name;
+		this.number = number;
+		this.IA = ia;
+		incrementNumber++;
+	}
+	
 	/**Constructeur d'un joueur sans paramètres*/
 	public Player(){
 		this("J" + incrementNumber,true);

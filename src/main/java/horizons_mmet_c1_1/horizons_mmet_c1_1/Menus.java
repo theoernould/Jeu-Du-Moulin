@@ -11,10 +11,10 @@ public enum Menus {
 				OptionsMenu.NOUVELLE,
 				OptionsMenu.RETOUR
 		}, PRINCIPAL),
-			CONTINUER("Continuer à partir de quelle configuration ?", "Continuer la partie précédente", new OptionsMenu[] {
+			/*CONTINUER("Continuer à partir de quelle configuration ?", "Continuer la partie précédente", new OptionsMenu[] {
 					OptionsMenu.QUITTER,
 					OptionsMenu.RETOUR
-			}, JOUER),
+			}, JOUER),*/
 			NOUVELLE("Comment démarrer la nouvelle partie", "Commencer une nouvelle partie", new OptionsMenu[] {
 				OptionsMenu.RIEN,
 				OptionsMenu.CONFIGURATION,

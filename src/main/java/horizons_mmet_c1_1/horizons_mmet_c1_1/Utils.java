@@ -54,4 +54,9 @@ public class Utils {
 		int choice = Utils.entrerInt(1, options.length);
 		return options[choice-1];
 	}
+	
+	public static void closeScanner() {
+		scanner.close();
+	}
+	
 }
