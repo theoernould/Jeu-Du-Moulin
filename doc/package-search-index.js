@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"horizons_mmet_c1_1.horizons_mmet_c1_1"}];updateSearchResults();

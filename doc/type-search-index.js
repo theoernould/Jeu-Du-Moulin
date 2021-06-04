@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"horizons_mmet_c1_1.horizons_mmet_c1_1","l":"BoardGame"}];updateSearchResults();
