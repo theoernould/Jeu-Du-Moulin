@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="233.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Règles">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Text>
+      <TextArea layoutX="15.0" layoutY="80.0" prefHeight="300.0" prefWidth="570.0" text="Bienvenue dans les coulisses du jeu LineUp3. Le But ? Soyez le premier à &#10;aligner vos 3 pions !&#10;Pour jouer, c'est très simple :&#10;- Que ce soit seul ou à plusieurs, déposer vos 3 pions 1 à 1 et chacun &#10;  votre tour sur le plateu que vous aurez choisi au préalablement. &#10;  Magnifiquement n'est ce pas ?&#10;- Chacun son tour ( le plus petit commence toujours ) vous pourrez soit :&#10;&#9;1 - déplacer l'un de vos pions&#10;&#9;2 - poser un piège&#10;La mécanique des pièges vous permettra de ralentir vos adversaires &#10;pour être sûr d'être le premier à aligner ses pions.&#10;- Le premier à aligner ses 3 pions sur un cotés du plateau ( les angles ne&#10; comptent pas ) gagne la partie.&#10;&#10;Good game, good luck and have fun">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextArea>
+      <Button fx:id="buttonReturn" layoutX="536.0" layoutY="14.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="↩" />
+   </children>
+</Pane>
