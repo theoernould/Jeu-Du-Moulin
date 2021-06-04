@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -94,7 +95,12 @@ public class GameBase {
 							Thread.sleep(1000);
 
 							Utils.progressivePrint("Génération aléatoire des pions ? (true ou false)\n", DELAY);
-							genAlea = scanner.nextBoolean();
+	//BOUCLER TANT QUE L'ENTREE EST INVALIDE !!!				
+							try{
+								genAlea = scanner.nextBoolean();
+							}catch(InputMismatchException e){
+								System.out.println("Entrée invalide !");
+							}
 							
 							display = false;
 							break;
@@ -204,14 +210,24 @@ public class GameBase {
 
 	/**Crée le plateau de jeu selon les entrées*/             
 	public static BoardGame createBoardGame() throws Exception {
-
+		boolean erreur = true;
+		int nbSides = 0;
+		
 		Utils.progressivePrint("Bienvenue sur LineUp 3\n", DELAY);
 
 		Thread.sleep(1000);
 
 		Utils.progressivePrint("Veuillez entrer le nombre de côtés des formes du plateau : \n", DELAY);
-
-		int nbSides = scanner.nextInt();
+//ATTENTION BOUCLE INFINIE !!!!
+		while(erreur) {
+			try{
+				nbSides = scanner.nextInt();
+				erreur = false;
+			}catch(InputMismatchException e) {
+				System.out.println("Entrée invalide !");
+			}
+		}
+		
 
 		Utils.progressivePrint("Veuillez entrer le nombre de formes du plateau : \n", DELAY);
 
@@ -398,4 +414,6 @@ public class GameBase {
 		return plateau.movePawn(x1, y1, x2, y2, p);
 
 	}
+	
+	
 }
