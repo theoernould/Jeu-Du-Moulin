@@ -1,5 +1,9 @@
 package horizons_ihm;
 
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -7,6 +11,7 @@ import java.util.Scanner;
  */
 public class Utils {
 	private static Scanner scanner = new Scanner(System.in);
+	static final String dir = System.getProperty("user.dir") + File.separator;
 	/**
 	 * Vérifie qu'une valeur est comprise entre deux autres ou égale.
 	 * @param x Valeur à comparer
@@ -33,15 +38,21 @@ public class Utils {
 		}
 	}
 	
+	public static String dateToString(LocalDateTime date) {
+		return date.getDayOfMonth() + " " + date.getMonth().getDisplayName(TextStyle.FULL, Locale.FRANCE) + " " + date.getYear() + " à " + date.getHour() + "h" + date.getMinute();
+	}
+	
 	/**
 	 * Demande en boucle à l'utilisateur une valeur tant qu'il n'est pas inclus entre les bornes
 	 * @param borneInf Borne inférieure
 	 * @param borneSup Borne supérieure
 	 */
 	public static int entrerInt(int borneInf, int borneSup) {
+		System.out.print("Choix : ");
 		int x = scanner.nextInt();
 		while(!Utils.isBetween(x,borneInf, borneSup)) {
 			System.out.println("Nombre invalide !");
+			System.out.print("Choix : ");
 			x = scanner.nextInt();
 		}
 		return x;

@@ -16,8 +16,6 @@ import javafx.stage.Stage;
 */
 public class Horizons extends Application {
 
-	final String dir = System.getProperty("user.dir") + File.separator;
-
 	/**Boucle principale de jeu
 	 * @throws IOException */
 	public void start(Stage stage) throws IOException {

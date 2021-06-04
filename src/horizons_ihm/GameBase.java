@@ -45,14 +45,15 @@ public class GameBase {
 					break;
 					
 					case CONTINUER:
-						path = Paths.get("src/main/last_save.txt");
+						path = Paths.get(Utils.dir + "files/last_save.txt");
 						if(path.toFile().exists()) {
 							ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
 							int lineNumber=1;
+							LocalDateTime date = null;
 							for(String line : lines) {
 								if(lineNumber == 1) {
-									LocalDateTime date = LocalDateTime.parse(line);
-									System.out.println(date);
+									date = LocalDateTime.parse(line);
+									//System.out.println(date);
 								} else if(lineNumber == 2) {
 									String[] options = line.split(":");
 									plateau = new BoardGame(Integer.parseInt(options[0]),Integer.parseInt(options[1]));
@@ -61,7 +62,7 @@ public class GameBase {
 									
 									String[] firstOptions = options[0].split(":");
 									boolean ia = false;
-									System.out.println(firstOptions[0]);
+									//System.out.println(firstOptions[0]);
 									if(firstOptions[0].equals("IA")) ia = true;
 									Player p = new Player(firstOptions[0], Integer.parseInt(firstOptions[1]), ia);
 									joueurs.add(p);
@@ -76,6 +77,7 @@ public class GameBase {
 								}
 								lineNumber++;
 							}
+							Utils.progressivePrint("Chargement de la sauvegarde du " + Utils.dateToString(date) + "\n", GameBase.DELAY);
 							display = false;
 						} else {
 							System.out.println("Impossible de charger la dernière sauvegarde.");
@@ -105,7 +107,7 @@ public class GameBase {
 							display = false;
 							break;
 						case CONFIGURATION:
-							path = Paths.get("src/main/" + "default" + "_config.txt");
+							path = Paths.get(Utils.dir + "files/default_config.txt");
 							ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
 							int nbCotesFormes = 0;
 							int nbFormes = 0;
@@ -129,6 +131,8 @@ public class GameBase {
 							
 							plateau = new BoardGame(nbCotesFormes, nbFormes);
 							
+							Utils.progressivePrint("Chargement de la configuration par défaut\n", GameBase.DELAY);
+							
 							display = false;
 							break;
 				case REGLES:
@@ -143,8 +147,8 @@ public class GameBase {
 		}
 		
 		if(choix != OptionsMenu.QUITTER) {
+
 			if(joueurs.size() == 0) {
-				scanner.nextLine();
 				if(nbPlayers == 1) {
 					joueurs.add(GameBase.createPlayer("Joueur"));
 					joueurs.add(GameBase.createPlayer());
@@ -172,8 +176,8 @@ public class GameBase {
 
 			}
 			
-			System.out.println(gagnant + "  a gagné la partie ! GG :D" );
-			File saveFile = new File("src/main/last_save.txt");
+			Utils.progressivePrint(gagnant + "  a gagné la partie ! GG :D\n", GameBase.DELAY);
+			File saveFile = new File(Utils.dir + "files/last_save.txt");
 				saveFile.delete();
 		}
 
@@ -181,7 +185,7 @@ public class GameBase {
 	}
 	
 	public static void getConfigFromName(String name) throws IOException {
-		Path path = Paths.get("src/main/" + name + "_config.txt");
+		Path path = Paths.get(Utils.dir + "files/" + name + "_config.txt");
 		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
 		for(String line : lines) {
 			String[] options = line.split(" ");
@@ -216,10 +220,10 @@ public class GameBase {
 		while(erreur) {
 			try{
 				nbSides = scanner.nextInt();
-				erreur = false;
 			}catch(InputMismatchException e) {
 				System.out.println("Entrée invalide !");
 			}
+			erreur = false;
 		}
 		
 
@@ -278,14 +282,14 @@ public class GameBase {
 	}
 	
 	public static void saveGame(BoardGame plateau, List<Player> joueurs) throws IOException {
-		File saveFile = new File("src/main/last_save.txt");
+		File saveFile = new File(Utils.dir + "files/last_save.txt");
 		try {
 			saveFile.createNewFile();
 		} catch(IOException e) {
 			saveFile.delete();
 			saveFile.createNewFile();
 		}
-		PrintWriter saveFileWriter = new PrintWriter("src/main/last_save.txt");
+		PrintWriter saveFileWriter = new PrintWriter(Utils.dir + "files/last_save.txt");
 		/*FORMAT
 		 * D@date
 		 * NP@nbjoueurs
@@ -306,8 +310,9 @@ public class GameBase {
 
 	/**Execute les méthodes selon les choix d'actions du joueur
 	 * @param plateau plateau actuel
-	 * @param p joueur actuel*/
-	public static void action(BoardGame plateau, Player p) {
+	 * @param p joueur actuel
+	 * @throws InterruptedException */
+	public static void action(BoardGame plateau, Player p) throws InterruptedException {
 		int choice;
 		Square[] tabCases;
 		int randCase;
@@ -343,13 +348,11 @@ public class GameBase {
 					// Pas encore de pièges !
 				}
 			}else{
-				System.out.println("Au tour de l'IA de jouer !");
+				Utils.progressivePrint("Au tour de l'IA de jouer !\n", GameBase.DELAY);
 				tabCases =  plateau.playerPawns(p);
 				
 				int x;
 				int y;
-				
-				System.out.println("length : " + tabCases.length);
 				
 				randCase = Utils.random(0, 3);
 				x = tabCases[randCase].X;
@@ -357,14 +360,21 @@ public class GameBase {
 				
 				do{
 					randCase = Utils.random(0, 3);
-					System.out.println("rand : " + randCase);
 					x = tabCases[randCase].X-1;
 					y = tabCases[randCase].Y-1;
 				}while(!plateau.IcanMove(x, y));
+
+				int newX;
+				int newY;
 				
 				do{
-					canPut = plateau.movePawn(x, y, x + Utils.random(-1,2), y + Utils.random(-1,2), p);
+					newX = x + Utils.random(-2,2);
+					newY = y + Utils.random(-2,2);
+					canPut = plateau.movePawn(x, y, newX, newY, p);
+					System.out.println("infini");
 				}while(!canPut);
+				
+				Utils.progressivePrint("L'IA se déplace de la case " + (x+1) + "," + (y+1) + " à la case " + (newX+1) + "," + (newY+1) + "\n", GameBase.DELAY);
 
 				//System.out.println("Waw ça passe ! :D");
 			}
