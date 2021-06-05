@@ -3,6 +3,7 @@ package horizons_ihm;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,13 +12,11 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 
 /**Class qui permet de créer toutes les méthodes relatives au déroulement de la partie*/
 public class GameBase {
 
-	private static Scanner scanner = new Scanner(System.in);
 	private static final int DELAY = 50;
 
 	/**Algo principal de jeu avec les actions*/
@@ -99,7 +98,7 @@ public class GameBase {
 							Utils.progressivePrint("Génération aléatoire des pions ? (true ou false)\n", DELAY);
 	//BOUCLER TANT QUE L'ENTREE EST INVALIDE !!!				
 							try{
-								genAlea = scanner.nextBoolean();
+								genAlea = Utils.scanner.nextBoolean();
 							}catch(InputMismatchException e){
 								System.out.println("Entrée invalide !");
 							}
@@ -147,7 +146,6 @@ public class GameBase {
 		}
 		
 		if(choix != OptionsMenu.QUITTER) {
-
 			if(joueurs.size() == 0) {
 				if(nbPlayers == 1) {
 					joueurs.add(GameBase.createPlayer("Joueur"));
@@ -168,8 +166,8 @@ public class GameBase {
 			
 			while(gagnant == null) {
 
-				GameBase.saveGame(plateau, joueurs);
 				Player p = it.next();
+				if(!p.canPlacePawn()) GameBase.saveGame(plateau, joueurs);
 				if(!p.isIA()) showPlate(plateau);
 				action(plateau, p);
 				gagnant = plateau.gameWon(joueurs);
@@ -219,7 +217,7 @@ public class GameBase {
 //ATTENTION BOUCLE INFINIE !!!!
 		while(erreur) {
 			try{
-				nbSides = scanner.nextInt();
+				nbSides = Integer.parseInt(Utils.scanner.nextLine());
 			}catch(InputMismatchException e) {
 				System.out.println("Entrée invalide !");
 			}
@@ -229,7 +227,7 @@ public class GameBase {
 
 		Utils.progressivePrint("Veuillez entrer le nombre de formes du plateau : \n", DELAY);
 
-		int nbShapes = scanner.nextInt();
+		int nbShapes = Integer.parseInt(Utils.scanner.nextLine());
 
 		return new BoardGame(nbSides, nbShapes);
 	}
@@ -249,9 +247,11 @@ public class GameBase {
 	/**Crée un joueur avec le nom saisit par l'utilisateur */
 	public static Player createPlayer(String name) throws IOException, InterruptedException {
 
-		Utils.progressivePrint("Pseudo du " + name +  " ?\n", DELAY);
+		System.out.println("Pseudo du " + name +  " ?");
+		
+		String pseudo = Utils.scanner.nextLine();
 
-		return new Player(scanner.nextLine(), false);
+		return new Player(pseudo, false);
 	}
 
 	/**Crée par défaut un joueur nommé IA*/
@@ -289,7 +289,7 @@ public class GameBase {
 			saveFile.delete();
 			saveFile.createNewFile();
 		}
-		PrintWriter saveFileWriter = new PrintWriter(Utils.dir + "files/last_save.txt");
+		PrintWriter saveFileWriter = new PrintWriter(Utils.dir + "files/last_save.txt", StandardCharsets.UTF_8);
 		/*FORMAT
 		 * D@date
 		 * NP@nbjoueurs
@@ -389,9 +389,9 @@ public class GameBase {
 		int rY;
 		if(!p.isIA()){
 			System.out.print("Veuillez entrer les coordonnées :\nx : ");
-			int x = scanner.nextInt()-1;
+			int x = Utils.scanner.nextInt()-1;
 			System.out.print("y : ");
-			int y = scanner.nextInt()-1;
+			int y = Utils.scanner.nextInt()-1;
 			return plateau.placePawn(x, y, p);
 		}else{
 			rX = Utils.random(0, plateau.getNbShapes());
@@ -407,21 +407,16 @@ public class GameBase {
 	public static boolean actionMovePawn(BoardGame plateau, Player p) {
 
 		System.out.print("Veuillez entrer les coordonnées d'origine:\nx : ");
-		int x1 = scanner.nextInt()-1;
+		int x1 = Utils.scanner.nextInt()-1;
 		System.out.print("y : ");
-		int y1 = scanner.nextInt()-1;
+		int y1 = Utils.scanner.nextInt()-1;
 
 		System.out.print("\nVeuillez entrer les coordonnées de destination:\nx : ");
-		int x2 = scanner.nextInt()-1;
+		int x2 = Utils.scanner.nextInt()-1;
 		System.out.print("y : ");
-		int y2 = scanner.nextInt()-1;
+		int y2 = Utils.scanner.nextInt()-1;
 		return plateau.movePawn(x1, y1, x2, y2, p);
 
 	}
-	
-	public static void closeScanner() {
-		scanner.close();
-	}
-	
 	
 }

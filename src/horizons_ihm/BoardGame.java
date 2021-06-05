@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BoardGame {
@@ -107,7 +109,20 @@ public class BoardGame {
         }else{
             return false;
         }*/
-    	return ( ( squaresNeighbors(s1.X, s1.Y, s2.X, s2.Y) && squaresNeighbors(s2.X, s2.Y, s3.X, s3.Y) ) && ( ( (s1.X == s2.X && s2.X == s3.X) && ( (s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1) ) ) || ( (s1.Y == s2.Y && s2.Y == s3.Y) && ( (s1.X % 2 == 1) && (s2.X % 2 == 0) && (s3.X % 2 == 1) ) ) ) );
+    	System.out.println(s1 + " " + s2 + " " + s3);
+    	System.out.println("voisins ? " + ( squaresNeighbors(s1.X, s1.Y, s2.X, s2.Y) && squaresNeighbors(s2.X, s2.Y, s3.X, s3.Y) ));
+    	System.out.println("first ? " + ( (s1.X == s2.X && s2.X == s3.X) && ( (s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1) ) ));
+    	System.out.println("second ? " + ( (s1.Y == s2.Y && s2.Y == s3.Y) && ( (s1.X % 2 == 1) && (s2.X % 2 == 0) && (s3.X % 2 == 1) ) ));
+    	return ( ( squaresNeighbors(s1.X, s1.Y, s2.X, s2.Y) && squaresNeighbors(s2.X, s2.Y, s3.X, s3.Y) ) && (
+	    				( (s1.X == s2.X && s2.X == s3.X) && 
+	    						( (s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1) ) 
+	    				)
+	    					|| 
+	    				( (s1.Y == s2.Y && s2.Y == s3.Y) && 
+	    						( (s1.X % 2 == 1) && (s2.X % 2 == 0) && (s3.X % 2 == 1) ) 
+	    				)
+    				) 
+    			);
     }
 
 

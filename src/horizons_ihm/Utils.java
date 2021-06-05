@@ -10,7 +10,7 @@ import java.util.Scanner;
  * Contient les fonctions communes dans les classes.
  */
 public class Utils {
-	private static Scanner scanner = new Scanner(System.in);
+	public static Scanner scanner = new Scanner(System.in);
 	static final String dir = System.getProperty("user.dir") + File.separator;
 	/**
 	 * Vérifie qu'une valeur est comprise entre deux autres ou égale.
@@ -49,7 +49,11 @@ public class Utils {
 	 */
 	public static int entrerInt(int borneInf, int borneSup) {
 		System.out.print("Choix : ");
-		int x = scanner.nextInt();
+		String xStr = "";
+		while(xStr.equals("")) {
+			xStr = scanner.nextLine();
+		}
+		int x = Integer.parseInt(xStr);
 		while(!Utils.isBetween(x,borneInf, borneSup)) {
 			System.out.println("Nombre invalide !");
 			System.out.print("Choix : ");
@@ -59,7 +63,6 @@ public class Utils {
 	}
 	
 	public static void shutdown() {
-		GameBase.closeScanner();
 		Utils.closeScanner();
 		System.exit(0);
 	}

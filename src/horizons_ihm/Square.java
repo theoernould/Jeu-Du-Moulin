@@ -1,6 +1,6 @@
 package horizons_ihm;
 
-public class Square {
+public class Square implements Comparable<Square> {
 	
 	protected final int X;
 	protected final int Y;
@@ -48,6 +48,10 @@ public class Square {
 	
 	public String toString() {
 		return "(" + X + ", " + Y + ") " + player;
+	}
+	@Override
+	public int compareTo(Square o) {
+		return Math.min(this.X - o.X,this.Y - o.Y);
 	}
 	
 }

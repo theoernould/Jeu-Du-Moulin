@@ -21,7 +21,7 @@ public class Horizons extends Application {
 	public void start(Stage stage) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		//System.out.println(dir + "fxml/accueil.fxml");
-		URL fxmlFileUrl = getClass().getResource("accueil.fxml");
+		URL fxmlFileUrl = getClass().getResource("regles.fxml");
 		if (fxmlFileUrl == null) {
 			System.out.println("Impossible de charger le fichier fxml");
 			System.exit(-1);
@@ -39,7 +39,7 @@ public class Horizons extends Application {
 
 	public static void main(String[] args) throws IOException, InterruptedException,Exception {
 
-		OptionsMenu choix = Utils.afficherMenu(Menus.CHOIX_INTERFACE);
+		/*OptionsMenu choix = Utils.afficherMenu(Menus.CHOIX_INTERFACE);
 		
 		if(choix == OptionsMenu.TEXTUEL) {
 			GameBase.game();
@@ -47,7 +47,9 @@ public class Horizons extends Application {
 			Application.launch(args);
 		} else {
 			Utils.shutdown();
-		}
+		}*/
+		
+		Application.launch(args);
 
 	}
 
