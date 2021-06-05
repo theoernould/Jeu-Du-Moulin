@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="165.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Configuration">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Text>
+      <TextArea fx:id="textAreaConfig" layoutX="200.0" layoutY="86.0" prefHeight="30.0" prefWidth="200.0" />
+      <Button fx:id="buttonLeft" layoutX="150.0" layoutY="86.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="&lt;" />
+      <Button fx:id="buttonRight" layoutX="400.0" layoutY="86.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="&gt;" />
+      <Text layoutX="60.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Génération aléatoire">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="71.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de Joueur">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="352.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de coté">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="345.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de forme">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="buttonReturn" layoutX="536.0" layoutY="14.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="↩" />
+      <Button fx:id="buttonContinue" layoutX="210.0" layoutY="324.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" text="Continuer" />
+      <CheckBox fx:id="checkBoxAlea" layoutX="268.0" layoutY="180.0" mnemonicParsing="false" />
+      <TextArea fx:id="textAreaPlayer" layoutX="259.0" layoutY="246.0" prefHeight="18.0" prefWidth="18.0" />
+      <TextArea fx:id="textAreaForme" layoutX="527.0" layoutY="246.0" prefHeight="18.0" prefWidth="18.0" />
+      <TextArea fx:id="textAreaFace" layoutX="527.0" layoutY="180.0" prefHeight="18.0" prefWidth="18.0" />
+   </children>
+</Pane>
