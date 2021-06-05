@@ -79,7 +79,7 @@ public class GameBase {
 							Utils.progressivePrint("Chargement de la sauvegarde du " + Utils.dateToString(date) + "\n", GameBase.DELAY);
 							display = false;
 						} else {
-							System.out.println("Impossible de charger la derni√®re sauvegarde.");
+							System.out.println("Impossible de charger la dernËre sauvegarde.");
 						}
 						break;
 					case NOUVELLE:
@@ -95,7 +95,7 @@ public class GameBase {
 
 							Thread.sleep(1000);
 
-							Utils.progressivePrint("G√©n√©ration al√©atoire des pions ? (true ou false)\n", DELAY);
+							Utils.progressivePrint("GÈnÈration alÈatoire des pions ? (true ou false)\n", DELAY);
 	//BOUCLER TANT QUE L'ENTREE EST INVALIDE !!!				
 							try{
 								genAlea = Utils.scanner.nextBoolean();
@@ -130,7 +130,7 @@ public class GameBase {
 							
 							plateau = new BoardGame(nbCotesFormes, nbFormes);
 							
-							Utils.progressivePrint("Chargement de la configuration par d√©faut\n", GameBase.DELAY);
+							Utils.progressivePrint("Chargement de la configuration par dÈfaut\n", GameBase.DELAY);
 							
 							display = false;
 							break;
@@ -174,7 +174,7 @@ public class GameBase {
 
 			}
 			
-			Utils.progressivePrint(gagnant + "  a gagn√© la partie ! GG :D\n", GameBase.DELAY);
+			Utils.progressivePrint(gagnant + "  a gagnÈ la partie ! GG :D\n", GameBase.DELAY);
 			File saveFile = new File(Utils.dir + "files/last_save.txt");
 				saveFile.delete();
 		}
@@ -271,7 +271,7 @@ public class GameBase {
 				}
 			}
 		Thread.sleep(1000);
-		Utils.progressivePrint("G√©n√©ration al√©atoire effectu√©e, bon jeu !\n", DELAY);
+		Utils.progressivePrint("GÈnÈration al√©atoire effectuÈe, bon jeu !\n", DELAY);
 	}
 
 	/**Montre le plateau
@@ -340,10 +340,10 @@ public class GameBase {
 			}
 		} else {
 			if(!p.isIA()){
-				System.out.println(p + " : " + "que voulez vous faire ?\n\t1. D√©placer un pion\n\t2. Placer un pi√®ge");
+				System.out.println(p + " : " + "que voulez vous faire ?\n\t1. DÈplacer un pion\n\t2. Placer un pi√®ge");
 				choice = Utils.entrerInt(1,2);
 				if(choice == 1) {
-					while(!actionMovePawn(plateau,p)) System.out.println("Impossible de d√©placer le pion !");
+					while(!actionMovePawn(plateau,p)) System.out.println("Impossible de dÈplacer le pion !");
 				} else if(choice == 2) {
 					// Pas encore de pi√®ges !
 				}
@@ -374,7 +374,7 @@ public class GameBase {
 					System.out.println("infini");
 				}while(!canPut);
 				
-				Utils.progressivePrint("L'IA se d√©place de la case " + (x+1) + "," + (y+1) + " √† la case " + (newX+1) + "," + (newY+1) + "\n", GameBase.DELAY);
+				Utils.progressivePrint("L'IA se dÈplace de la case " + (x+1) + "," + (y+1) + " ‡† la case " + (newX+1) + "," + (newY+1) + "\n", GameBase.DELAY);
 
 				//System.out.println("Waw √ßa passe ! :D");
 			}
@@ -388,7 +388,7 @@ public class GameBase {
 		int rX;
 		int rY;
 		if(!p.isIA()){
-			System.out.print("Veuillez entrer les coordonn√©es :\nx : ");
+			System.out.print("Veuillez entrer les coordonnÈes :\nx : ");
 			int x = Utils.scanner.nextInt()-1;
 			System.out.print("y : ");
 			int y = Utils.scanner.nextInt()-1;

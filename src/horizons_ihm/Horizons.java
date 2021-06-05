@@ -15,13 +15,20 @@ import javafx.stage.Stage;
 	@author Elisa Adrianssens, Mexane Bonaventure, Maxime Bimont, Théo Ernould
 */
 public class Horizons extends Application {
+	static Stage mainStage;
 
 	/**Boucle principale de jeu
 	 * @throws IOException */
 	public void start(Stage stage) throws IOException {
+		mainStage = stage;
+		setSceneFromFile("commencer", "LineUp3");
+		//stage.getIcons().add(new Image("file:icon.png"));
+		stage.show();
+	}
+	
+	public static void setSceneFromFile(String fileName, String title) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
-		//System.out.println(dir + "fxml/accueil.fxml");
-		URL fxmlFileUrl = getClass().getResource("regles.fxml");
+		URL fxmlFileUrl = Horizons.class.getResource(fileName + ".fxml");
 		if (fxmlFileUrl == null) {
 			System.out.println("Impossible de charger le fichier fxml");
 			System.exit(-1);
@@ -30,12 +37,11 @@ public class Horizons extends Application {
 		Parent root = loader.load();
 
 		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.setTitle("Sélection");
-		stage.show();
+		mainStage.setScene(scene);
+		mainStage.setTitle(title);
 	}
 
-
+	
 
 	public static void main(String[] args) throws IOException, InterruptedException,Exception {
 
