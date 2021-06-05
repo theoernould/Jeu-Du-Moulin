@@ -1,15 +1,17 @@
-
-
 package horizons_ihm;
 
+import javafx.scene.paint.Color;
+
+/**Class qui permet de symboliser les joueurs d'une partie */
 public class Player {
 	
 	private String name;
 	private int placedPawns = 0;
 	private static final int PAWNS_NUMBER = 3;
-	public final int number;
 	private static int incrementNumber = 1;
 	private final boolean IA;
+	public final int number;
+	private Color color;
 	
 	
 	/**Contructeur d'un joueur avec un nom et la condition d'un vrai joueur ou IA*/
@@ -20,11 +22,18 @@ public class Player {
 		incrementNumber++;
 	}
 	
+	/** Contructeur d'un joueur avec un nom, son id et la condition d'un vrai joueur ou IA*/
 	public Player(String name, int number, boolean ia) {
 		this.name = name;
 		this.number = number;
 		this.IA = ia;
 		incrementNumber++;
+	}
+	
+	/** Contructeur d'un joueur avec un nom, sa couleur et la condition d'un vrai joueur ou IA*/
+	public Player(String name, Color color, boolean ia) {
+		this(name,ia);
+		this.color = color;
 	}
 	
 	/**Constructeur d'un joueur sans paramètres*/
@@ -62,12 +71,19 @@ public class Player {
 		return this.placedPawns;
 	}
 	
+	/**Getteur Name*/
 	public String getName() {
 		return name;
 	}
 	
+	/**Getteur Number*/
 	public int getNumber() {
 		return number;
+	}
+	
+	/**Getteur Color*/
+	public Color getColor() {
+		return color;
 	}
 
 

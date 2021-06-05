@@ -1,8 +1,8 @@
 package horizons_ihm;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 */
 public class Horizons extends Application {
 	static Stage mainStage;
+	public static BoardGame plateau;
+	public static List<Player> joueurs;
 
 	/**Boucle principale de jeu
 	 * @throws IOException */
@@ -26,6 +28,10 @@ public class Horizons extends Application {
 		stage.show();
 	}
 	
+	/**Change la scène de l'interface graphique
+	* @param fileName Nom de la scène
+	* @param title Affichage du nom de la fenêtre
+	* @throws IOException */
 	public static void setSceneFromFile(String fileName, String title) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		URL fxmlFileUrl = Horizons.class.getResource(fileName + ".fxml");
@@ -38,11 +44,14 @@ public class Horizons extends Application {
 
 		Scene scene = new Scene(root);
 		mainStage.setScene(scene);
-		mainStage.setTitle(title);
+		mainStage.setTitle("LineUp3" + title);
 	}
 
-	
-
+	/**Choix du type d'affichage pour une partie'
+	* @param args Paramètre d'entrée de l'utilisateur
+	* @throws Exception
+	* @throws IOException
+	* @throws InterruptedException */
 	public static void main(String[] args) throws IOException, InterruptedException,Exception {
 
 		OptionsMenu choix = Utils.afficherMenu(Menus.CHOIX_INTERFACE);

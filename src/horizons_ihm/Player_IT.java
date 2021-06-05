@@ -29,18 +29,20 @@ public class Player_IT  implements Iterator<Player>{
         //Rajouter une condition de fin de partie ? Tant que la partie n'est pas terminée on change de joueur
         
     }
-
+	
+	/**Retourne l'indice du joueur suivant */ 
     public boolean hasNext(){
         return idx < this.lesJoueurs.size();
     }
 
-    public Player next(){
-                                      
+	/**Retourne le joueur suivant
+	* @param p un joueur */
+    public Player next(){                            
        Player p = this.lesJoueurs.get(idx);
        search();
        return p;
-
     }
+
     /**Getteur LesJoueurs*/
     public List<Player> getLesJoueurs(){
         return this.lesJoueurs;

@@ -11,13 +11,12 @@ import java.util.Scanner;
  */
 public class Utils {
 	public static Scanner scanner = new Scanner(System.in);
-	static final String dir = System.getProperty("user.dir") + File.separator;
+	public static final String dir = System.getProperty("user.dir") + File.separator;
 	/**
 	 * Vérifie qu'une valeur est comprise entre deux autres ou égale.
 	 * @param x Valeur à comparer
 	 * @param y Valeur minimale
-	 * @param z Valeur maximale
-	 */
+	 * @param z Valeur maximale */
 	public static boolean isBetween(int x, int y, int z) {
 		return x >= y && x <= z;
 	}
@@ -30,7 +29,7 @@ public class Utils {
 	 * Ecrie le texte de façon progressive
 	 * @param str Texte à afficher
 	 * @param delay Délai entre l'affichage de chaque caractère
-	 */
+	* @throws InterruptedException */
 	public static void progressivePrint(String str, int delay) throws InterruptedException {
 		for(String c : str.split("")) {
 			System.out.print(c);
@@ -67,6 +66,9 @@ public class Utils {
 		System.exit(0);
 	}
 	
+	/**Afficher le menu textuel 
+	 * @param menu Menu
+     * @return l'indice du menu */
 	public static OptionsMenu afficherMenu(Menus menu) {
 		System.out.println(menu.getTitle());
 		OptionsMenu[] options = menu.getOptions();

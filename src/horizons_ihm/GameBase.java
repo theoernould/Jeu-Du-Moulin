@@ -19,10 +19,11 @@ public class GameBase {
 
 	private static final int DELAY = 50;
 	
-	public static void graphicPlay(BoardGame plateau, List<Player> joueurs) {
-		
-	}
-	
+	/**Boucle de jeu
+	* @param plateau plateau du jeu
+	* @param joueurs l'ensemble des joueurs
+	* @throws Exception
+	* @throws InterruptedException */
 	public static void play(BoardGame plateau, List<Player> joueurs) throws InterruptedException, Exception {
 		Iterator<Player> it = new Player_IT(joueurs);
 
@@ -39,11 +40,14 @@ public class GameBase {
 		}
 		
 		Utils.progressivePrint(gagnant + "  a gagné la partie ! GG :D\n", GameBase.DELAY);
-		File saveFile = new File(Utils.dir + "files/last_save.txt");
+		File saveFile = new File(Utils.dir + "saves/last.txt");
 			saveFile.delete();
 	}
 
-	/**Algo principal de jeu avec les actions*/
+	/**Algo principal de jeu avec les actions
+	* @throws Exception
+	* @throws IOException
+	* @throws InterruptedException */
 	public static void game()throws Exception,IOException, InterruptedException {
 		
 		BoardGame plateau = null;
@@ -72,10 +76,8 @@ public class GameBase {
 							if(joueurs.size() >= 2) {
 								Utils.progressivePrint("Chargement de la sauvegarde...\n", GameBase.DELAY);
 								display = false;
-							} else {
-								System.out.println("Impossible de charger la dernère sauvegarde.");
-							}
-						}
+							} else System.out.println("Impossible de charger la dernère sauvegarde.");
+						} else System.out.println("Impossible de charger la dernère sauvegarde.");
 						break;
 					case NOUVELLE:
 						menuActuel = Menus.NOUVELLE;
@@ -144,8 +146,12 @@ public class GameBase {
 		Utils.shutdown();
 	}
 	
+	/**Méthode pour pouvoir générer le plateau d'une partie ultérieurement commencée
+	* @param saveName Le nom du fichier correspondant à la partie sauvegarder
+	* @return le plateau de jeu
+	* @throws IOException */
 	public static BoardGame generateBoardGameFromSave(String saveName) throws IOException {
-		Path path = Paths.get(Utils.dir + "files/" + saveName + ".txt");
+		Path path = Paths.get(Utils.dir + "saves/" + saveName + ".txt");
 		BoardGame plateau = null;
 		if(path.toFile().exists()) {
 			ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
@@ -156,8 +162,13 @@ public class GameBase {
 		return plateau;
 	}
 	
+	/**Méthode pour pouvoir générer la liste de joueurs et les pions de la partie commencé ultérieurement
+	* @param saveName Le nom du fichier correspondant à la partie sauvegarder
+	* @param plateau le plateau retourner dans la méthode generateBoardGameFromSave()
+	* @return les joueurs
+	* @throws IOException */
 	public static List<Player> generatePlayersAndPlacePawnsFromSave(BoardGame plateau, String saveName) throws IOException {
-		Path path = Paths.get(Utils.dir + "files/" + saveName + ".txt");
+		Path path = Paths.get(Utils.dir + "saves/" + saveName + ".txt");
 		List<Player> joueurs = new ArrayList<Player>();
 		if(path.toFile().exists()) {
 			ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
@@ -184,8 +195,42 @@ public class GameBase {
 		return joueurs;
 	}
 	
+	/**Sauvegarde d'une partie commencée'
+	* @param plateau plateau du jeu
+	* @param joueurs l'ensemble des joueurs
+	* @throws IOException */
+	public static void saveGame(BoardGame plateau, List<Player> joueurs) throws IOException {
+		File saveFile = new File(Utils.dir + "saves/last.txt");
+		try {
+			saveFile.createNewFile();
+		} catch(IOException e) {
+			saveFile.delete();
+			saveFile.createNewFile();
+		}
+		PrintWriter saveFileWriter = new PrintWriter(Utils.dir + "saves/last.txt", StandardCharsets.UTF_8);
+		/*FORMAT
+		 * @date
+		 * @nbcotes:@nbformes
+		 * @nomjoueur1:@numjoueur1;@coordsPion1;@coordsPion2;@coordsPion3;
+		 * @nomjoueur2:@numjoueur2;@coordsPion1;@coordsPion2;@coordsPion3;
+		 */
+			saveFileWriter.println(LocalDateTime.now());
+			saveFileWriter.println(plateau.getNbSides() + ":" + plateau.getNbShapes());
+			for(Player p : joueurs) {
+				saveFileWriter.print(p.getName() + ":" + p.getNumber() + ";");
+				Square[] pawns = plateau.playerPawns(p);
+				for(int i=0;i<pawns.length;i++) saveFileWriter.print(pawns[i].X + ":" + pawns[i].Y + ";");
+				saveFileWriter.println();
+			}
+		saveFileWriter.close();
+	}
+	
+	/**Afficher les paramètres du plateau de la partie sauvegardée
+	* @param name Nom du fichier correspondant à la partie sauvegardée
+	* @return le plateau
+	* @throws IOException */
 	public static String[] loadConfig(String name) throws IOException {
-		Path path = Paths.get(Utils.dir + "files/" + name + "_config.txt");
+		Path path = Paths.get(Utils.dir + "configs/" + name + ".txt");
 		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
 		String[] returns = new String[4];
 		for(String line : lines) {
@@ -209,7 +254,8 @@ public class GameBase {
 		return returns;
 	}
 
-	/**CrÃ©e le plateau de jeu selon les entrÃ©es*/             
+	/**CrÃ©e le plateau de jeu selon les entrÃ©es
+	* @throws IOException */             
 	public static BoardGame createBoardGame() throws Exception {
 		boolean erreur = true;
 		int nbSides = 0;
@@ -238,7 +284,9 @@ public class GameBase {
 	}
 	
 
-	/**Retourne le nombre de joueur saisit par l'utilisateur*/
+	/**Retourne le nombre de joueur saisit par l'utilisateur
+	* @throws IOException 
+	* @throws InterruptedException */
 	public static int numberPlayer()throws IOException, InterruptedException {
 
 		Utils.progressivePrint("Combien de joueurs ? (entre 1 et 4)\n" , DELAY);
@@ -249,7 +297,9 @@ public class GameBase {
 	}
 	
 
-	/**CrÃ©e un joueur avec le nom saisit par l'utilisateur */
+	/**CrÃ©e un joueur avec le nom saisit par l'utilisateur 
+	* @throws IOException 
+	* @throws InterruptedException */
 	public static Player createPlayer(String name) throws IOException, InterruptedException {
 
 		System.out.println("Pseudo du " + name +  " ?");
@@ -263,7 +313,10 @@ public class GameBase {
 	public static Player createPlayer() {
 		return new Player("IA", true);
 	}
-	/**Permet la gÃ©nÃ©ration alÃ©atoire des pions de tout les joueurs*/
+	
+	/**Permet la gÃ©nÃ©ration alÃ©atoire des pions de tout les joueurs
+	* @param plateau plateau du jeu
+	* @param joueurs l'ensemble des joueurs */
 	public static void generationAleatoire(BoardGame plateau, List<Player> players) throws InterruptedException {
 			for(Player p : players) {
 				while(p.canPlacePawn()) {
@@ -284,32 +337,6 @@ public class GameBase {
 	public static void showPlate(BoardGame plateau) throws Exception,IOException, InterruptedException {
 		Utils.progressivePrint("Voici le plateau \n", DELAY);
 		System.out.println(plateau.toStringIntelligent());
-	}
-	
-	public static void saveGame(BoardGame plateau, List<Player> joueurs) throws IOException {
-		File saveFile = new File(Utils.dir + "files/last_save.txt");
-		try {
-			saveFile.createNewFile();
-		} catch(IOException e) {
-			saveFile.delete();
-			saveFile.createNewFile();
-		}
-		PrintWriter saveFileWriter = new PrintWriter(Utils.dir + "files/last_save.txt", StandardCharsets.UTF_8);
-		/*FORMAT
-		 * @date
-		 * @nbcotes:@nbformes
-		 * @nomjoueur1:@numjoueur1;@coordsPion1;@coordsPion2;@coordsPion3;
-		 * @nomjoueur2:@numjoueur2;@coordsPion1;@coordsPion2;@coordsPion3;
-		 */
-			saveFileWriter.println(LocalDateTime.now());
-			saveFileWriter.println(plateau.getNbSides() + ":" + plateau.getNbShapes());
-			for(Player p : joueurs) {
-				saveFileWriter.print(p.getName() + ":" + p.getNumber() + ";");
-				Square[] pawns = plateau.playerPawns(p);
-				for(int i=0;i<pawns.length;i++) saveFileWriter.print(pawns[i].X + ":" + pawns[i].Y + ";");
-				saveFileWriter.println();
-			}
-		saveFileWriter.close();
 	}
 
 	/**Execute les mÃ©thodes selon les choix d'actions du joueur

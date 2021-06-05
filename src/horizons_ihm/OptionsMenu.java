@@ -1,5 +1,7 @@
 package horizons_ihm;
 
+/**Intitulé de chaque menu
+* @param msg titre d'un menu */
 public enum OptionsMenu {
 	GRAPHIQUE("Graphique"),
 	TEXTUEL("Textuel"),
@@ -14,10 +16,12 @@ public enum OptionsMenu {
 	
 	private String msg;
 	
+	/**Constructeur de l'enum */
 	OptionsMenu(String msg) {
 		this.msg = msg;
 	}
 	
+	/**Retourne l'intitulé d'un menu */
 	public String toString() {
 		return msg;
 	}

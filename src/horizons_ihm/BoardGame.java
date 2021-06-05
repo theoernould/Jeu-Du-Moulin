@@ -9,10 +9,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**Class qui symbolise le plateau */
 public class BoardGame {
 	
 	private Square[][] squares;
-	private Trap[] traps;
+	private Trap[] blocages;
 	
 	private int nbSides;
 	private int nbShapes;
@@ -20,7 +21,8 @@ public class BoardGame {
 	/**Constructeur de BoardGame
 	* @param sides nombre de cÃ´tÃ©s du plateau Ã  crÃ©er
 	* @param shapes nombre de formes du plateau Ã  crÃ©er
-	* @return BoardGame un plateau avec sides cÃ´teÃ©s et shapes formes*/
+	* @return BoardGame un plateau avec sides cÃ´teÃ©s et shapes formes
+	* @throws IOException */
 	public BoardGame(int sides, int shapes) throws IOException {
 		this.nbSides = sides;
 		this.nbShapes = shapes;
@@ -187,12 +189,17 @@ public class BoardGame {
 	/*public boolean squaresAligned(int y1, int y2, int y3) {
 		
 	}*/
-
+	
+	/**Affichage Textuel
+	* @throws Exception */
 	public String toStringIntelligent() throws Exception {
 		if(Utils.isBetween(nbSides,3,4) && nbShapes == 3) return advancedDisplay();
 		else return primaryDisplay();
 	}
 	
+	/**Affichage textuel des plateaux de forme carré et triangle
+	* @return le plateau généré par le nombre de côté et les fichiers
+	* @throws IOException */
 	public String advancedDisplay() throws IOException {
 		StringBuilder display = new StringBuilder();
 		String shapeName;
@@ -220,6 +227,8 @@ public class BoardGame {
 		return display.toString();
 	}
 	
+	/**Affichage des plateaux sous forme de tableau
+	* @return le plateau généré par le nombre de côté et les fichiers */
 	public String primaryDisplay() {
 		StringBuilder strBuilder = new StringBuilder();
 		for(int x=0;x<squares.length;x++) {

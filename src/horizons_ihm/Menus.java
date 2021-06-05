@@ -1,5 +1,9 @@
 package horizons_ihm;
 
+/**Affichage du Menu sous forme textuel
+* @param title titre du menu sélectionné
+* @param options choix dans le menu
+* @param previousMenu permet de retourner dans le menu précédent */
 public enum Menus {
 	CHOIX_INTERFACE("Quel affichage souhaitez-vous ?", new OptionsMenu[] {
 			OptionsMenu.TEXTUEL,
@@ -44,6 +48,7 @@ public enum Menus {
 		this.previousMenu = pm;
 	}
 	
+	/**Retourne l'intituldé du menu*/
 	public String getTitle() {
 		return title;
 	}
@@ -52,6 +57,7 @@ public enum Menus {
 		return optionName;
 	}*/
 	
+	/**Retourne les choix du menu*/
 	public OptionsMenu[] getOptions() {
 		return options;
 	}

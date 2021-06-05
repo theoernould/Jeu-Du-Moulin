@@ -2,13 +2,19 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import horizons_ihm.BoardGame;
 import horizons_ihm.GameBase;
 import horizons_ihm.Horizons;
+import horizons_ihm.Player;
+import horizons_ihm.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
@@ -29,8 +35,35 @@ public class ConfigurationController implements Initializable {
 	@FXML ListView<HBox> listeJoueurs;
 	HBox ajouterJoueur;
 	
-	public void continuer() {
-		
+	List<ColorPicker> pickers = new ArrayList<ColorPicker>();
+	int incrementNumber = 1;
+	
+	public void continuer() throws IOException {
+		String boardgameName = listeTypes.getSelectionModel().getSelectedItem().getId();
+		String[] options = boardgameName.replace("plateau_", "").split("_");
+		Horizons.plateau = new BoardGame(Integer.parseInt(options[0]),Integer.parseInt(options[1]));
+		Horizons.joueurs = new ArrayList<Player>();
+		int nbPlayers = 0;
+		for(HBox box : listeJoueurs.getItems()) {
+			Node labelNode = box.getChildren().get(0);
+			if(labelNode instanceof Label) {
+				Label label = (Label) labelNode;
+				String name = label.getText();
+				ColorPicker colorPicker;
+				int i=0;
+				do {
+					colorPicker = pickers.get(i);
+					i++;
+				} while(!colorPicker.getId().equals(label.getId() + "_picker") && i<pickers.size());
+				Color color = colorPicker.getValue();
+				Horizons.joueurs.add(new Player(name, color, false));
+				nbPlayers++;
+			}
+		}
+		if(nbPlayers >= 1 ) {
+			if(nbPlayers == 1) Horizons.joueurs.add(new Player("IA", Color.rgb(Utils.random(0, 255), Utils.random(0, 255), Utils.random(0, 255)), true));
+			Horizons.setSceneFromFile(boardgameName, "Plateau");
+		}
 	}
 	
 	public void retour() throws IOException {
@@ -85,6 +118,7 @@ public class ConfigurationController implements Initializable {
 					String pseudo = text.getText();
 					if(!pseudo.equals("...") && !pseudo.trim().isEmpty()) {
 						Label label = new Label(pseudo);
+							label.setId("" + incrementNumber);
 						box.getChildren().add(0,label);
 						box.getChildren().remove(text);
 					}
@@ -93,13 +127,17 @@ public class ConfigurationController implements Initializable {
 			box.getChildren().add(text);
 		}
 			ColorPicker picker = new ColorPicker();
+				picker.setId(incrementNumber + "_picker");
+			pickers.add(picker);
 			Button removeButton = new Button("-");
 			removeButton.setOnMouseClicked(ev -> {
+				pickers.remove(picker);
 				listeJoueurs.getItems().remove(box);
 			});
 			ajouterJoueur.setAlignment(Pos.CENTER_LEFT);
 			box.setSpacing(25);
 			box.getChildren().addAll(picker,removeButton);
 		listeJoueurs.getItems().add(listeJoueurs.getItems().size()-1, box);
+		incrementNumber++;
 	}
 }
