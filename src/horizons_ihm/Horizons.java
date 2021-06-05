@@ -45,7 +45,7 @@ public class Horizons extends Application {
 
 	public static void main(String[] args) throws IOException, InterruptedException,Exception {
 
-		/*OptionsMenu choix = Utils.afficherMenu(Menus.CHOIX_INTERFACE);
+		OptionsMenu choix = Utils.afficherMenu(Menus.CHOIX_INTERFACE);
 		
 		if(choix == OptionsMenu.TEXTUEL) {
 			GameBase.game();
@@ -53,9 +53,7 @@ public class Horizons extends Application {
 			Application.launch(args);
 		} else {
 			Utils.shutdown();
-		}*/
-		
-		Application.launch(args);
+		}
 
 	}
 

@@ -1,4 +1,4 @@
 @cotesformes 4
 @nbformes 3
-@nbplayers 1
-@genalea false
+@nbplayers 2
+@genalea true

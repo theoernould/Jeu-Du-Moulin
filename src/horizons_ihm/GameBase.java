@@ -18,6 +18,30 @@ import java.util.List;
 public class GameBase {
 
 	private static final int DELAY = 50;
+	
+	public static void graphicPlay(BoardGame plateau, List<Player> joueurs) {
+		
+	}
+	
+	public static void play(BoardGame plateau, List<Player> joueurs) throws InterruptedException, Exception {
+		Iterator<Player> it = new Player_IT(joueurs);
+
+		Player gagnant = null;
+		
+		while(gagnant == null) {
+
+			Player p = it.next();
+			if(!p.canPlacePawn()) GameBase.saveGame(plateau, joueurs);
+			if(!p.isIA()) showPlate(plateau);
+			action(plateau, p);
+			gagnant = plateau.gameWon(joueurs);
+
+		}
+		
+		Utils.progressivePrint(gagnant + "  a gagné la partie ! GG :D\n", GameBase.DELAY);
+		File saveFile = new File(Utils.dir + "files/last_save.txt");
+			saveFile.delete();
+	}
 
 	/**Algo principal de jeu avec les actions*/
 	public static void game()throws Exception,IOException, InterruptedException {
@@ -36,50 +60,21 @@ public class GameBase {
 		while(display) {
 			choix = Utils.afficherMenu(menuActuel);
 			
-			Path path;
-			
 			switch(choix) {
 				case JOUER:
 					menuActuel = Menus.JOUER;
 					break;
 					
 					case CONTINUER:
-						path = Paths.get(Utils.dir + "files/last_save.txt");
-						if(path.toFile().exists()) {
-							ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
-							int lineNumber=1;
-							LocalDateTime date = null;
-							for(String line : lines) {
-								if(lineNumber == 1) {
-									date = LocalDateTime.parse(line);
-									//System.out.println(date);
-								} else if(lineNumber == 2) {
-									String[] options = line.split(":");
-									plateau = new BoardGame(Integer.parseInt(options[0]),Integer.parseInt(options[1]));
-								} else {
-									String[] options = line.split(";");
-									
-									String[] firstOptions = options[0].split(":");
-									boolean ia = false;
-									//System.out.println(firstOptions[0]);
-									if(firstOptions[0].equals("IA")) ia = true;
-									Player p = new Player(firstOptions[0], Integer.parseInt(firstOptions[1]), ia);
-									joueurs.add(p);
-									
-									for(int i=1;i<options.length;i++) {
-										String[] coords = options[i].split(":");
-										int x = Integer.parseInt(coords[0])-1;
-										int y = Integer.parseInt(coords[1])-1;
-										plateau.placePawn(x, y, p);
-									}
-									
-								}
-								lineNumber++;
+						plateau = GameBase.generateBoardGameFromSave("last_save");
+						if(plateau != null) {
+							joueurs = GameBase.generatePlayersAndPlacePawnsFromSave(plateau, "last_save");
+							if(joueurs.size() >= 2) {
+								Utils.progressivePrint("Chargement de la sauvegarde...\n", GameBase.DELAY);
+								display = false;
+							} else {
+								System.out.println("Impossible de charger la dernère sauvegarde.");
 							}
-							Utils.progressivePrint("Chargement de la sauvegarde du " + Utils.dateToString(date) + "\n", GameBase.DELAY);
-							display = false;
-						} else {
-							System.out.println("Impossible de charger la dernère sauvegarde.");
 						}
 						break;
 					case NOUVELLE:
@@ -106,29 +101,12 @@ public class GameBase {
 							display = false;
 							break;
 						case CONFIGURATION:
-							path = Paths.get(Utils.dir + "files/default_config.txt");
-							ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
-							int nbCotesFormes = 0;
-							int nbFormes = 0;
-							for(String line : lines) {
-								String[] options = line.split(" ");
-								switch(options[0]) {
-									case "@cotesformes":
-										nbCotesFormes = Integer.parseInt(options[1]);
-										break;
-									case "@nbformes":
-										nbFormes = Integer.parseInt(options[1]);
-										break;
-									case "@nbplayers":
-										nbPlayers = Integer.parseInt(options[1]);
-										break;
-									case "@genalea":
-										genAlea = Boolean.valueOf(options[1]);
-										break;
-								}
-							}
 							
-							plateau = new BoardGame(nbCotesFormes, nbFormes);
+							String[] returns = GameBase.loadConfig("default");
+							
+							plateau = new BoardGame(Integer.parseInt(returns[0]), Integer.parseInt(returns[1]));
+							nbPlayers = Integer.parseInt(returns[0]);
+							genAlea = Boolean.parseBoolean(returns[1]);
 							
 							Utils.progressivePrint("Chargement de la configuration par défaut\n", GameBase.DELAY);
 							
@@ -159,49 +137,76 @@ public class GameBase {
 			}
 			
 			if(genAlea) generationAleatoire(plateau,joueurs);
-
-			Iterator<Player> it = new Player_IT(joueurs);
-
-			Player gagnant = null;
 			
-			while(gagnant == null) {
-
-				Player p = it.next();
-				if(!p.canPlacePawn()) GameBase.saveGame(plateau, joueurs);
-				if(!p.isIA()) showPlate(plateau);
-				action(plateau, p);
-				gagnant = plateau.gameWon(joueurs);
-
-			}
-			
-			Utils.progressivePrint(gagnant + "  a gagné la partie ! GG :D\n", GameBase.DELAY);
-			File saveFile = new File(Utils.dir + "files/last_save.txt");
-				saveFile.delete();
+			GameBase.play(plateau, joueurs);
 		}
 
 		Utils.shutdown();
 	}
 	
-	public static void getConfigFromName(String name) throws IOException {
+	public static BoardGame generateBoardGameFromSave(String saveName) throws IOException {
+		Path path = Paths.get(Utils.dir + "files/" + saveName + ".txt");
+		BoardGame plateau = null;
+		if(path.toFile().exists()) {
+			ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
+			String line = lines.get(1);
+				String[] options = line.split(":");
+				plateau = new BoardGame(Integer.parseInt(options[0]),Integer.parseInt(options[1]));
+		}
+		return plateau;
+	}
+	
+	public static List<Player> generatePlayersAndPlacePawnsFromSave(BoardGame plateau, String saveName) throws IOException {
+		Path path = Paths.get(Utils.dir + "files/" + saveName + ".txt");
+		List<Player> joueurs = new ArrayList<Player>();
+		if(path.toFile().exists()) {
+			ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
+			int lineNumber=1;
+			for(String line : lines) {
+				if(lineNumber > 2) {
+					String[] options = line.split(";");
+					
+					String[] firstOptions = options[0].split(":");
+					boolean ia = firstOptions[0].equals("IA");
+					Player p = new Player(firstOptions[0], Integer.parseInt(firstOptions[1]), ia);
+					joueurs.add(p);
+					
+					for(int i=1;i<options.length;i++) {
+						String[] coords = options[i].split(":");
+						int x = Integer.parseInt(coords[0])-1;
+						int y = Integer.parseInt(coords[1])-1;
+						plateau.placePawn(x, y, p);
+					}
+				}
+				lineNumber++;
+			}
+		}
+		return joueurs;
+	}
+	
+	public static String[] loadConfig(String name) throws IOException {
 		Path path = Paths.get(Utils.dir + "files/" + name + "_config.txt");
 		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
+		String[] returns = new String[4];
 		for(String line : lines) {
 			String[] options = line.split(" ");
 			switch(options[0]) {
 				case "@cotesformes":
-					
+					returns[0] = options[1];
 					break;
 				case "@nbformes":
-					
+					returns[1] = options[1];
 					break;
 				case "@nbplayers":
-					
+					returns[2] = options[1];
 					break;
 				case "@genalea":
-					
+					returns[3] = options[1];
 					break;
 			}
 		}
+		
+		return returns;
 	}
 
 	/**CrÃ©e le plateau de jeu selon les entrÃ©es*/             
@@ -291,11 +296,10 @@ public class GameBase {
 		}
 		PrintWriter saveFileWriter = new PrintWriter(Utils.dir + "files/last_save.txt", StandardCharsets.UTF_8);
 		/*FORMAT
-		 * D@date
-		 * NP@nbjoueurs
-		 * S@nbcotes;@nbformes
-		 * P@joueur1:@numjoueur1:@coordsPion1:@coordsPion2:@coordsPion3
-		 * P@joueur2@numjoueur2:@coordsPion1:@coordsPion2:@coordsPion3
+		 * @date
+		 * @nbcotes:@nbformes
+		 * @nomjoueur1:@numjoueur1;@coordsPion1;@coordsPion2;@coordsPion3;
+		 * @nomjoueur2:@numjoueur2;@coordsPion1;@coordsPion2;@coordsPion3;
 		 */
 			saveFileWriter.println(LocalDateTime.now());
 			saveFileWriter.println(plateau.getNbSides() + ":" + plateau.getNbShapes());
