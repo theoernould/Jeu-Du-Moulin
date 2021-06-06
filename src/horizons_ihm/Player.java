@@ -85,7 +85,9 @@ public class Player {
 	public Color getColor() {
 		return color;
 	}
-
-
+	
+	public boolean equals(Player p) {
+		return this.number == p.number;
+	}
 }
 

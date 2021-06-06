@@ -61,5 +61,10 @@ public class Square {
 	public String toString() {
 		return "(" + X + ", " + Y + ") " + player;
 	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
 	
 }

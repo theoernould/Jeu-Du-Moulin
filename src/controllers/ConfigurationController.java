@@ -48,16 +48,18 @@ public class ConfigurationController implements Initializable {
 			Node labelNode = box.getChildren().get(0);
 			if(labelNode instanceof Label) {
 				Label label = (Label) labelNode;
-				String name = label.getText();
-				ColorPicker colorPicker;
-				int i=0;
-				do {
-					colorPicker = pickers.get(i);
-					i++;
-				} while(!colorPicker.getId().equals(label.getId() + "_picker") && i<pickers.size());
-				Color color = colorPicker.getValue();
-				Horizons.joueurs.add(new Player(name, color, false));
-				nbPlayers++;
+				if(label.getText() != "Ajouter un joueur") {
+					String name = label.getText();
+					ColorPicker colorPicker;
+					int i=0;
+					do {
+						colorPicker = pickers.get(i);
+						i++;
+					} while(!colorPicker.getId().equals(label.getId() + "_picker") && i<pickers.size());
+					Color color = colorPicker.getValue();
+					Horizons.joueurs.add(new Player(name, color, false));
+					nbPlayers++;
+				}
 			}
 		}
 		if(nbPlayers >= 1 ) {
@@ -113,12 +115,13 @@ public class ConfigurationController implements Initializable {
 		HBox box = new HBox();
 		if(temporary) {
 			TextField text = new TextField("...");
+			text.setId("" + incrementNumber);
 			text.setOnKeyPressed(ev -> {
 				if(ev.getCode() == KeyCode.ENTER) {
 					String pseudo = text.getText();
 					if(!pseudo.equals("...") && !pseudo.trim().isEmpty()) {
 						Label label = new Label(pseudo);
-							label.setId("" + incrementNumber);
+							label.setId("" + text.getId());
 						box.getChildren().add(0,label);
 						box.getChildren().remove(text);
 					}

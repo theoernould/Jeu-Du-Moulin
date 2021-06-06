@@ -143,12 +143,16 @@ public class BoardGame {
 		//return squares.get(getIndex(x,y)).addPlayer(p);
 	}
 	
+	public Player getSquarePlayer(int x, int y) {
+		return squares[x][y].getPlayer();
+	}
+	
 	public boolean movePawnAbsolute(int x1, int y1, int x2, int y2) {
 		return squares[x1][y1].moveTo(squares[x2][y2]);
 	}
 	
 	public boolean movePawn(int x1, int y1, int x2, int y2, Player p) {
-		/*if(p.isIA()) {
+		//if(p.isIA()) {
 			System.out.println("Coords 1 : " + x1 + " " + y1);
 			System.out.println("existe ? " + pawnExist(x1,y1));
 			if(pawnExist(x1,y1)) {
@@ -162,7 +166,7 @@ public class BoardGame {
 			}
 			if(pawnExist(x1,y1) && pawnExist(x2,y2)) System.out.println("voisins ? " + squaresNeighbors(x1+1, y1+1, x2+1, y2+1));
 			System.out.println("--------");
-		}*/
+		//}
 		if( pawnExist(x1, y1) && pawnExist(x2,y2) && squares[x1][y1].squareOccuped() && !squares[x2][y2].squareOccuped() && squaresNeighbors(x1+1, y1+1, x2+1, y2+1) && squares[x1][y1].playerIs(p)) {
 			//System.out.println("move absolute");
 			return movePawnAbsolute(x1, y1, x2, y2);

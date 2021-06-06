@@ -44,7 +44,7 @@ public class Horizons extends Application {
 
 		Scene scene = new Scene(root);
 		mainStage.setScene(scene);
-		mainStage.setTitle("LineUp3" + title);
+		mainStage.setTitle("LineUp3 - " + title);
 	}
 
 	/**Choix du type d'affichage pour une partie'
