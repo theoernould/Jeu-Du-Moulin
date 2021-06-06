@@ -6,10 +6,8 @@ import java.util.List;
 
 public class Player_IT  implements Iterator<Player>{
 
-
-    private List<Player> lesJoueurs;
+	private List<Player> lesJoueurs;
     private int idx;
-    
 
     /**Constructeur de l'itÃ©rateur*/
     public Player_IT(List<Player> joueurs){
@@ -19,6 +17,7 @@ public class Player_IT  implements Iterator<Player>{
         search();
     }
 
+    /**Cherche le prochain indice dans l’itérateur*/
     public void search(){
         idx ++;
        
@@ -37,7 +36,7 @@ public class Player_IT  implements Iterator<Player>{
 
 	/**Retourne le joueur suivant
 	* @param p un joueur */
-    public Player next(){                            
+    public Player next(){
        Player p = this.lesJoueurs.get(idx);
        search();
        return p;

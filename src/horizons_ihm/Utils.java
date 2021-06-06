@@ -12,23 +12,23 @@ import java.util.Scanner;
 public class Utils {
 	public static Scanner scanner = new Scanner(System.in);
 	public static final String dir = System.getProperty("user.dir") + File.separator;
-	/**
-	 * Vérifie qu'une valeur est comprise entre deux autres ou égale.
-	 * @param x Valeur à comparer
-	 * @param y Valeur minimale
-	 * @param z Valeur maximale */
+	
+	/**Vérifie qu'une valeur est comprise entre deux autres ou égale.
+	* @param x Valeur à comparer
+	* @param y Valeur minimale
+	* @param z Valeur maximale */
 	public static boolean isBetween(int x, int y, int z) {
 		return x >= y && x <= z;
 	}
 	
+	/**Retourne un nombre al�atoire entre 2 entiers*/
 	public static int random(int x, int y) {
 		return (int) (Math.random() * (y - x) + x);
 	}
 
-	/**
-	 * Ecrie le texte de façon progressive
-	 * @param str Texte à afficher
-	 * @param delay Délai entre l'affichage de chaque caractère
+	/**Ecrire le texte de façon progressive
+	* @param str Texte à afficher
+	* @param delay Délai entre l'affichage de chaque caractère
 	* @throws InterruptedException */
 	public static void progressivePrint(String str, int delay) throws InterruptedException {
 		for(String c : str.split("")) {
@@ -37,15 +37,14 @@ public class Utils {
 		}
 	}
 	
+	/**Retourne une date en une �criture conventionnelle*/
 	public static String dateToString(LocalDateTime date) {
 		return date.getDayOfMonth() + " " + date.getMonth().getDisplayName(TextStyle.FULL, Locale.FRANCE) + " " + date.getYear() + " à " + date.getHour() + "h" + date.getMinute();
 	}
 	
-	/**
-	 * Demande en boucle à l'utilisateur une valeur tant qu'il n'est pas inclus entre les bornes
-	 * @param borneInf Borne inférieure
-	 * @param borneSup Borne supérieure
-	 */
+	/**Demande en boucle àl'utilisateur une valeur tant qu'il n'est pas inclus entre les bornes
+	* @param borneInf Borne inférieure
+	* @param borneSup Borne supérieure*/
 	public static int entrerInt(int borneInf, int borneSup) {
 		System.out.print("Choix : ");
 		String xStr = "";
@@ -61,14 +60,15 @@ public class Utils {
 		return x;
 	}
 	
+	/**Eteint le programme*/
 	public static void shutdown() {
 		Utils.closeScanner();
 		System.exit(0);
 	}
 	
 	/**Afficher le menu textuel 
-	 * @param menu Menu
-     * @return l'indice du menu */
+	* @param menu Menu
+    * @return l'indice du menu */
 	public static OptionsMenu afficherMenu(Menus menu) {
 		System.out.println(menu.getTitle());
 		OptionsMenu[] options = menu.getOptions();
@@ -78,6 +78,7 @@ public class Utils {
 		return options[choice-1];
 	}
 	
+	/**Fermer le scanner*/
 	public static void closeScanner() {
 		scanner.close();
 	}

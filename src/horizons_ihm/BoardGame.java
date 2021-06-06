@@ -79,22 +79,18 @@ public class BoardGame {
 		return pawns;
 	}
 
-	/**
-	 * Indique si une case existe 
+	/**Indique si une case existe 
 	 * @param x Coordonnées en x de la case 
 	 * @param y Coordonnées en y de la case
-	 * @return boolean 
-	 */
+	 * @return boolean */
 	public boolean pawnExist(int x, int y) {
 		return Utils.isBetween(x, 0, squares.length-1) && Utils.isBetween(y, 0, squares[0].length-1);
 	}
 
-	/**
+	/**Indique si 3 cases sont align�es 
 	 * @param s1 case 1
 	 * @param s2 case 2
-	 * @param s3 case 3
-	 *
-	 */
+	 * @param s3 case 3 */
     public boolean alignement(Square s1, Square s2, Square s3) {
        /* if(s1.X==s2.X && s2.X==s3.X){
             if((s1.Y%2==0 && s2.Y%2!=0 && s3.Y%2!=0)){
@@ -133,8 +129,7 @@ public class BoardGame {
 	 * @param x Coordonnées en x
 	 * @param y Coordonnées en y
 	 * @param p Joueur qui souhaite placer le pion
-	 * @return
-	 */
+	 * @return */
 	public boolean placePawn(int x, int y, Player p) {
 		if(squares[x][y].addPlayer(p))  {
 			p.placePawn();

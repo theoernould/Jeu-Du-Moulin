@@ -33,12 +33,12 @@ public class Square {
 		} else return false;
 	}
 
-	/**Vérifier si oui ou non le joeurs passé en paramètre est le même que celui sur la case */
+	/**Vérifier si oui ou non le joueur passé en paramètre est le même que celui sur la case */
 	public boolean playerIs(Player p) {
 		return squareOccuped() && this.player.equals(p);
 	}
 	
-	/**Supprmier le joeur sur la case et le retourne */
+	/**Supprimer le joueur sur la case et le retourne */
 	public Player removePlayer() {
 		Player toReturn = this.player;
 		this.player = null;
@@ -62,6 +62,7 @@ public class Square {
 		return "(" + X + ", " + Y + ") " + player;
 	}
 
+	/**Getteur de Player*/
 	public Player getPlayer() {
 		return player;
 	}

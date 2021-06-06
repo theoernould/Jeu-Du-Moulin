@@ -48,7 +48,7 @@ public enum Menus {
 		this.previousMenu = pm;
 	}
 	
-	/**Retourne l'intituldé du menu*/
+	/**Retourne l'intitulé du menu*/
 	public String getTitle() {
 		return title;
 	}

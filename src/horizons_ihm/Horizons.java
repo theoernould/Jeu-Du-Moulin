@@ -47,7 +47,7 @@ public class Horizons extends Application {
 		mainStage.setTitle("LineUp3 - " + title);
 	}
 
-	/**Choix du type d'affichage pour une partie'
+	/**Choix du type d'affichage pour une partie
 	* @param args Paramètre d'entrée de l'utilisateur
 	* @throws Exception
 	* @throws IOException
