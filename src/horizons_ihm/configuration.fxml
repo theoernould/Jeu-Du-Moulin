@@ -35,7 +35,7 @@
    <left>
       <VBox alignment="CENTER" prefWidth="282.0" spacing="55.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#continuer" prefWidth="255.0" text="Continuer avec cette sauvegarde" textAlignment="CENTER" wrapText="true">
+            <Button mnemonicParsing="false" onAction="#continuer" prefWidth="255.0" text="Continuer avec cette configuration" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="25.0" />
                </font>

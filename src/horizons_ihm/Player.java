@@ -18,6 +18,7 @@ public class Player {
 	public Player(String name, boolean ia) {
 		this.name = name;
 		this.IA = ia;
+		this.color = Color.rgb(Utils.random(0, 256), Utils.random(0, 256), Utils.random(0, 256));
 		this.number = incrementNumber;
 		incrementNumber++;
 	}
@@ -26,6 +27,7 @@ public class Player {
 	public Player(String name, int number, boolean ia) {
 		this.name = name;
 		this.number = number;
+		this.color = Color.rgb(Utils.random(0, 256), Utils.random(0, 256), Utils.random(0, 256));
 		this.IA = ia;
 		incrementNumber++;
 	}
@@ -33,6 +35,11 @@ public class Player {
 	/** Contructeur d'un joueur avec un nom, sa couleur et la condition d'un vrai joueur ou IA*/
 	public Player(String name, Color color, boolean ia) {
 		this(name,ia);
+		this.color = color;
+	}
+
+	public Player(String name, int number, Color color, boolean ia) {
+		this(name,number,ia);
 		this.color = color;
 	}
 	
@@ -79,6 +86,10 @@ public class Player {
 	/**Getteur Number*/
 	public int getNumber() {
 		return number;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
 	/**Getteur Color*/

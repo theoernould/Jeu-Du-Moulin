@@ -13,6 +13,9 @@ import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+
 
 /**Class qui permet de cr√©er toutes les m√©thodes relatives au d√©roulement de la partie*/
 public class GameBase {
@@ -107,8 +110,8 @@ public class GameBase {
 							String[] returns = GameBase.loadConfig("default");
 							
 							plateau = new BoardGame(Integer.parseInt(returns[0]), Integer.parseInt(returns[1]));
-							nbPlayers = Integer.parseInt(returns[0]);
-							genAlea = Boolean.parseBoolean(returns[1]);
+							nbPlayers = Integer.parseInt(returns[2]);
+							genAlea = Boolean.parseBoolean(returns[3]);
 							
 							Utils.progressivePrint("Chargement de la configuration par dÈfaut\n", GameBase.DELAY);
 							
@@ -138,7 +141,11 @@ public class GameBase {
 				}
 			}
 			
-			if(genAlea) generationAleatoire(plateau,joueurs);
+			if(genAlea) {
+				generationAleatoire(plateau,joueurs);
+				Thread.sleep(1000);
+				Utils.progressivePrint("GÈnÈration al√©atoire effectuÈe, bon jeu !\n", DELAY);
+			};
 			
 			GameBase.play(plateau, joueurs);
 		}
@@ -157,7 +164,7 @@ public class GameBase {
 			ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path);
 			String line = lines.get(1);
 				String[] options = line.split(":");
-				plateau = new BoardGame(Integer.parseInt(options[0]),Integer.parseInt(options[1]));
+				plateau = new BoardGame(Integer.parseInt(options[0]),Integer.parseInt(options[1]), saveName);
 		}
 		return plateau;
 	}
@@ -180,12 +187,14 @@ public class GameBase {
 					String[] firstOptions = options[0].split(":");
 					boolean ia = firstOptions[0].equals("IA");
 					Player p = new Player(firstOptions[0], Integer.parseInt(firstOptions[1]), ia);
+						p.setColor((Color) Paint.valueOf(firstOptions[2]));
 					joueurs.add(p);
 					
 					for(int i=1;i<options.length;i++) {
 						String[] coords = options[i].split(":");
 						int x = Integer.parseInt(coords[0])-1;
 						int y = Integer.parseInt(coords[1])-1;
+						System.out.println("pion placÈ en : " + x + " " + y);
 						plateau.placePawn(x, y, p);
 					}
 				}
@@ -200,29 +209,40 @@ public class GameBase {
 	* @param joueurs l'ensemble des joueurs
 	* @throws IOException */
 	public static void saveGame(BoardGame plateau, List<Player> joueurs) throws IOException {
-		File saveFile = new File(Utils.dir + "saves/last.txt");
+		File saveFile = new File(Utils.dir + "saves/" + plateau.getSaveName() + ".txt");
 		try {
 			saveFile.createNewFile();
 		} catch(IOException e) {
 			saveFile.delete();
 			saveFile.createNewFile();
 		}
-		PrintWriter saveFileWriter = new PrintWriter(Utils.dir + "saves/last.txt", StandardCharsets.UTF_8);
+		PrintWriter saveFileWriter = new PrintWriter(Utils.dir + "saves/" + plateau.getSaveName() + ".txt", StandardCharsets.UTF_8);
 		/*FORMAT
 		 * @date
 		 * @nbcotes:@nbformes
-		 * @nomjoueur1:@numjoueur1;@coordsPion1;@coordsPion2;@coordsPion3;
-		 * @nomjoueur2:@numjoueur2;@coordsPion1;@coordsPion2;@coordsPion3;
+		 * @nomjoueur1:@numjoueur1:color;@coordsPion1;@coordsPion2;@coordsPion3;
+		 * @nomjoueur2:@numjoueur2:color;@coordsPion1;@coordsPion2;@coordsPion3;
 		 */
 			saveFileWriter.println(LocalDateTime.now());
 			saveFileWriter.println(plateau.getNbSides() + ":" + plateau.getNbShapes());
+			System.out.println("good print");
 			for(Player p : joueurs) {
-				saveFileWriter.print(p.getName() + ":" + p.getNumber() + ";");
-				Square[] pawns = plateau.playerPawns(p);
-				for(int i=0;i<pawns.length;i++) saveFileWriter.print(pawns[i].X + ":" + pawns[i].Y + ";");
+				saveFileWriter.print(p.getName() + ":" + p.getNumber() + ":" + p.getColor() + ";");
+				System.out.println(p.pawnsLeft());
+				if(p.pawnsLeft() < 3) {
+					System.out.println("PRINT");
+					Square[] pawns = plateau.playerPawns(p);
+					System.out.println("sortie");
+					for(int i=0;i<(3-p.pawnsLeft());i++) {
+						System.out.println("test");
+						saveFileWriter.print(pawns[i].X + ":" + pawns[i].Y + ";");
+					}
+				}
+				System.out.println("dsqdsqds");
 				saveFileWriter.println();
 			}
 		saveFileWriter.close();
+		System.out.println("closed");
 	}
 	
 	/**Afficher les paramËtres du plateau de la partie sauvegardÈe
@@ -328,8 +348,6 @@ public class GameBase {
 					} while(!plateau.placePawn(x, y, p) /*|| plateau.gameWon(players)*/);
 				}
 			}
-		Thread.sleep(1000);
-		Utils.progressivePrint("GÈnÈration al√©atoire effectuÈe, bon jeu !\n", DELAY);
 	}
 
 	/**Montre le plateau

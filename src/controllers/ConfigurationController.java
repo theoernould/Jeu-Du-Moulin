@@ -26,6 +26,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class ConfigurationController implements Initializable {
 	@FXML ComboBox<Label> listeConfigs;
@@ -38,11 +39,12 @@ public class ConfigurationController implements Initializable {
 	List<ColorPicker> pickers = new ArrayList<ColorPicker>();
 	int incrementNumber = 1;
 	
-	public void continuer() throws IOException {
+	public void continuer() throws IOException, InterruptedException {
 		String boardgameName = listeTypes.getSelectionModel().getSelectedItem().getId();
 		String[] options = boardgameName.replace("plateau_", "").split("_");
 		Horizons.plateau = new BoardGame(Integer.parseInt(options[0]),Integer.parseInt(options[1]));
 		Horizons.joueurs = new ArrayList<Player>();
+		System.out.println(generation.isSelected());
 		int nbPlayers = 0;
 		for(HBox box : listeJoueurs.getItems()) {
 			Node labelNode = box.getChildren().get(0);
@@ -57,13 +59,14 @@ public class ConfigurationController implements Initializable {
 						i++;
 					} while(!colorPicker.getId().equals(label.getId() + "_picker") && i<pickers.size());
 					Color color = colorPicker.getValue();
-					Horizons.joueurs.add(new Player(name, color, false));
+					Horizons.joueurs.add(new Player(name.trim(), color, false));
 					nbPlayers++;
 				}
 			}
 		}
 		if(nbPlayers >= 1 ) {
 			if(nbPlayers == 1) Horizons.joueurs.add(new Player("IA", Color.rgb(Utils.random(0, 255), Utils.random(0, 255), Utils.random(0, 255)), true));
+			if(generation.isSelected()) GameBase.generationAleatoire(Horizons.plateau, Horizons.joueurs);
 			Horizons.setSceneFromFile(boardgameName, "Plateau");
 		}
 	}
@@ -122,9 +125,12 @@ public class ConfigurationController implements Initializable {
 					if(!pseudo.equals("...") && !pseudo.trim().isEmpty()) {
 						Label label = new Label(pseudo);
 							label.setId("" + text.getId());
+							label.fontProperty().set(Font.font(Font.getDefault().getName(), Font.getDefault().getSize()+5));
 						box.getChildren().add(0,label);
 						box.getChildren().remove(text);
 					}
+				} else {
+					if(text.getText().trim().startsWith("...")) text.setText(text.getText().trim().replace("...", ""));
 				}
 			});
 			box.getChildren().add(text);

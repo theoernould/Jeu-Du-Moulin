@@ -38,7 +38,15 @@ public class Utils {
 	}
 	
 	public static String dateToString(LocalDateTime date) {
-		return date.getDayOfMonth() + " " + date.getMonth().getDisplayName(TextStyle.FULL, Locale.FRANCE) + " " + date.getYear() + " Ã  " + date.getHour() + "h" + date.getMinute();
+		return date.getDayOfMonth() + " " + date.getMonth().getDisplayName(TextStyle.FULL, Locale.FRANCE) + " " + date.getYear() + " à " + date.getHour() + "h" + date.getMinute();
+	}
+	
+	public static String randomString(int length) {
+		String str = "";
+		for(int i=0;i<length;i++) {
+			str += (char) ('a' + Utils.random(0,26));
+		}
+		return str;
 	}
 	
 	/**

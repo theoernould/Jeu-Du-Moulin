@@ -14,6 +14,7 @@ public class BoardGame {
 	
 	private Square[][] squares;
 	private Trap[] blocages;
+	private String saveName;
 	
 	private int nbSides;
 	private int nbShapes;
@@ -26,6 +27,7 @@ public class BoardGame {
 	public BoardGame(int sides, int shapes) throws IOException {
 		this.nbSides = sides;
 		this.nbShapes = shapes;
+		this.saveName = Utils.randomString(3);
 		
 		// Initilisation des cases qui seront plus tard occupées par des pions
 		
@@ -40,6 +42,11 @@ public class BoardGame {
 		
 	}
 	
+	public BoardGame(int sides, int shapes, String saveName) throws IOException {
+		this(sides,shapes);
+		this.saveName = saveName;
+	}
+	
 	/**Accesseur du nombre de côtés du plateau*/
 	public int getNbSides() {
 		return nbSides;
@@ -48,6 +55,10 @@ public class BoardGame {
 	/**Accesseur du nombre de formes du plateau*/
 	public int getNbShapes() {
 		return nbShapes;
+	}
+	
+	public String getSaveName() {
+		return saveName;
 	}
 	
 	/**Retourne le joueur gagnant
@@ -152,7 +163,7 @@ public class BoardGame {
 	}
 	
 	public boolean movePawn(int x1, int y1, int x2, int y2, Player p) {
-		//if(p.isIA()) {
+		/*//if(p.isIA()) {
 			System.out.println("Coords 1 : " + x1 + " " + y1);
 			System.out.println("existe ? " + pawnExist(x1,y1));
 			if(pawnExist(x1,y1)) {
@@ -166,7 +177,7 @@ public class BoardGame {
 			}
 			if(pawnExist(x1,y1) && pawnExist(x2,y2)) System.out.println("voisins ? " + squaresNeighbors(x1+1, y1+1, x2+1, y2+1));
 			System.out.println("--------");
-		//}
+		//}*/
 		if( pawnExist(x1, y1) && pawnExist(x2,y2) && squares[x1][y1].squareOccuped() && !squares[x2][y2].squareOccuped() && squaresNeighbors(x1+1, y1+1, x2+1, y2+1) && squares[x1][y1].playerIs(p)) {
 			//System.out.println("move absolute");
 			return movePawnAbsolute(x1, y1, x2, y2);

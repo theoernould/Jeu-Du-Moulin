@@ -1,4 +1,4 @@
-@cotesformes 3
+@cotesformes 4
 @nbformes 3
-@nbplayers 2
+@nbplayers 1
 @genalea true
