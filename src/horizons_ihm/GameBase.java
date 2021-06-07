@@ -47,7 +47,7 @@ public class GameBase {
 			saveFile.delete();
 	}
 
-	/**Algo principal de jeu avec les actions
+	/**Algorithme principal de jeu avec les actions
 	* @throws Exception
 	* @throws IOException
 	* @throws InterruptedException */
@@ -204,7 +204,7 @@ public class GameBase {
 		return joueurs;
 	}
 	
-	/**Sauvegarde d'une partie commencée'
+	/**Sauvegarde d'une partie commencée
 	* @param plateau plateau du jeu
 	* @param joueurs l'ensemble des joueurs
 	* @throws IOException */
@@ -304,7 +304,7 @@ public class GameBase {
 	}
 	
 
-	/**Retourne le nombre de joueur saisit par l'utilisateur
+	/**Retourne le nombre de joueur saisi par l'utilisateur
 	* @throws IOException 
 	* @throws InterruptedException */
 	public static int numberPlayer()throws IOException, InterruptedException {
@@ -317,7 +317,7 @@ public class GameBase {
 	}
 	
 
-	/**CrÃ©e un joueur avec le nom saisit par l'utilisateur 
+	/**CrÃ©e un joueur avec le nom saisi par l'utilisateur 
 	* @throws IOException 
 	* @throws InterruptedException */
 	public static Player createPlayer(String name) throws IOException, InterruptedException {
