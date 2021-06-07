@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import horizons_ihm.Horizons;
-import horizons_ihm.Utils;
+import classes.Horizons;
+import classes.Utils;
 import javafx.fxml.Initializable;
 
 public class MenuController implements Initializable {

@@ -7,9 +7,9 @@ import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-import horizons_ihm.GameBase;
-import horizons_ihm.Horizons;
-import horizons_ihm.Utils;
+import classes.GameBase;
+import classes.Horizons;
+import classes.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;

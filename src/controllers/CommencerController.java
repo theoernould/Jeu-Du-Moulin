@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import horizons_ihm.Horizons;
+import classes.Horizons;
 import javafx.fxml.Initializable;
 
 public class CommencerController implements Initializable {

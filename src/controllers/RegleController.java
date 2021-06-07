@@ -2,7 +2,7 @@ package controllers;
 
 import java.io.IOException;
 
-import horizons_ihm.Horizons;
+import classes.Horizons;
 
 public class RegleController {
 	public void retour() throws IOException {

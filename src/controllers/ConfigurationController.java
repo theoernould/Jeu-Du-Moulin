@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import horizons_ihm.BoardGame;
-import horizons_ihm.GameBase;
-import horizons_ihm.Horizons;
-import horizons_ihm.Player;
-import horizons_ihm.Utils;
+import classes.BoardGame;
+import classes.GameBase;
+import classes.Horizons;
+import classes.Player;
+import classes.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;

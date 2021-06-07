@@ -1,14 +1,17 @@
 package controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
-import horizons_ihm.GameBase;
-import horizons_ihm.Horizons;
-import horizons_ihm.Player;
-import horizons_ihm.Player_IT;
+import classes.GameBase;
+import classes.Horizons;
+import classes.Player;
+import classes.Player_IT;
+import classes.Trap;
+import classes.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -94,41 +97,57 @@ public class PlateauController implements Initializable {
 					    DataFormat paintFormat = DataFormat.lookupMimeType(Paint.class.getName()); 
 					    paintFormat = (paintFormat == null) ? new DataFormat(Paint.class.getName()) : paintFormat;
 					    if (dragEvent.getGestureSource() != circle && dragBroard.hasContent(paintFormat) && ((Node) dragEvent.getGestureSource()).getParent().getId() != "blocages" && Horizons.plateau.getSquarePlayer(coords[0], coords[1]) == null) { 
-					        Circle circleOrigin = (Circle) dragEvent.getGestureSource();
+					        if(!((Node) dragEvent.getGestureSource()).getParent().getId().equals("pieges")) {
+						    	Circle circleOrigin = (Circle) dragEvent.getGestureSource();
+						        int[] originCoords = getCoordsFromCircle(circleOrigin);
+						        if(Horizons.plateau.squaresNeighbors(coords[0]+1, coords[1]+1, originCoords[0]+1, originCoords[1]+1)) {
+						        	Color originColor = (Color) circleOrigin.getFill();
+						        	circle.setFill(new Color(originColor.getRed(), originColor.getGreen(), originColor.getBlue(), 0.5));
+						        }
+					        }
+				        	dragEvent.acceptTransferModes(TransferMode.COPY);
+					    }
+					    dragEvent.consume();
+					});
+					circle.setOnDragExited(dragEvent -> {
+						final Dragboard dragBroard = dragEvent.getDragboard(); 
+					    DataFormat paintFormat = DataFormat.lookupMimeType(Paint.class.getName()); 
+					    paintFormat = (paintFormat == null) ? new DataFormat(Paint.class.getName()) : paintFormat;
+					    System.out.println(((Node) dragEvent.getGestureSource()).getParent().getId());
+					    if (dragEvent.getGestureSource() != circle && dragBroard.hasContent(paintFormat) && !((Node) dragEvent.getGestureSource()).getParent().getId().equals("pieges") && ((Node) dragEvent.getGestureSource()).getParent().getId() != "blocages" && Horizons.plateau.getSquarePlayer(coords[0], coords[1]) == null) { 
+					        System.out.println("entered : " + ((Node) dragEvent.getGestureSource()).getParent().getId());
+					    	Circle circleOrigin = (Circle) dragEvent.getGestureSource();
 					        int[] originCoords = getCoordsFromCircle(circleOrigin);
 					        if(Horizons.plateau.squaresNeighbors(coords[0]+1, coords[1]+1, originCoords[0]+1, originCoords[1]+1)) {
-					        	dragEvent.acceptTransferModes(TransferMode.COPY);
+					        	circle.setFill(Color.WHITE);
 					        }
 					    }
 					    dragEvent.consume();
 					});
 					circle.setOnDragDropped(dragEvent -> { 
+						System.out.println("DROPPED");
 					    boolean success = false; 
 					    try {
 					    	Circle circleOrigin = (Circle) dragEvent.getGestureSource();
 					    		Node parentNode = circleOrigin.getParent();
 				    			String id = parentNode.getId();
 					    		if(parentNode instanceof FlowPane) {
+					    			System.out.println("entrée ici");
 					    			if(id.equals("pions")) {
 					    				if(Horizons.plateau.placePawn(coords[0], coords[1], actualPlayer)) {
-											displayPlayer(it.next());
-									    	refreshBoardGame();
-								    		GameBase.saveGame(Horizons.plateau, Horizons.joueurs);
+							    			play();
 					    				}
 					    			} else if(id.equals("pieges")) {
-					    				// Placer un pi�ge
+					    				System.out.println("drop");
+					    				if(Horizons.plateau.placeTrap(coords[0], coords[1], actualPlayer)) {
+					    					play();
+					    				}
 					    			}
 					    		} else if(parentNode instanceof Pane) {
 					    			int[] originCoords = getCoordsFromCircle(circleOrigin);
 					    			if(Horizons.plateau.movePawn(originCoords[0], originCoords[1], coords[0], coords[1], actualPlayer)) {
-							    		displayPlayer(it.next());
-								    	refreshBoardGame();
-							    		GameBase.saveGame(Horizons.plateau, Horizons.joueurs);
-								    	/*if(Horizons.plateau.gameWon(Horizons.joueurs) != null) {
-								    		Horizons.setSceneFromFile("victoire", "Victoire");
-								    	} else {
-								    		displayPlayer(it.next());
-								    	}*/
+					    				play();
+					    				winTest();
 					    			}
 					    		}
 					        success = true; 
@@ -136,7 +155,7 @@ public class PlateauController implements Initializable {
 					    	
 					    } finally { 
 					        dragEvent.setDropCompleted(success); 
-					        dragEvent.consume(); 
+					        dragEvent.consume();
 					    } 
 					});
 			}
@@ -151,6 +170,48 @@ public class PlateauController implements Initializable {
     		GameBase.saveGame(Horizons.plateau, Horizons.joueurs);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void play() throws IOException {
+		Player nextPlayer = it.next();
+		if(nextPlayer.isIA()) playIA(nextPlayer);
+		if(Horizons.plateau.gameWon(Horizons.joueurs) != null) 
+		displayPlayer(it.next());
+    	refreshBoardGame();
+		GameBase.saveGame(Horizons.plateau, Horizons.joueurs);
+	}
+	
+	private void winTest() throws IOException {
+		Horizons.winner = Horizons.plateau.gameWon(Horizons.joueurs);
+		if(Horizons.winner == null) {
+			play();
+		} else {
+	    	refreshBoardGame();
+    		File saveFile = new File(Utils.dir + "saves/" + Horizons.plateau.getSaveName() + ".txt");
+			saveFile.delete();
+    		Horizons.setSceneFromFile("victoire", "Victoire");
+		}
+	}
+	
+	private void playIA(Player iaPlayer) {
+		if(iaPlayer.getTrap() != null) iaPlayer.getTrap().roundPass();
+		if(iaPlayer.canPlacePawn()) {
+			int rX;
+			int rY;
+			do {
+				rX = Utils.random(0, Horizons.plateau.getNbShapes());
+				rY = Utils.random(0, Horizons.plateau.getNbSides()*2);
+			} while (Horizons.plateau.placePawn(rX, rY, iaPlayer));
+		} else {
+			int choice = 1;//Utils.random(1, 4);
+			if(choice == 1) { // Déplacer pion
+				GameBase.iaMove(Horizons.plateau, iaPlayer);
+			} else if(choice == 2) { // Placer piège
+			
+			} else if(choice == 3) { // Placer blocage d'arc
+				
+			}
 		}
 	}
 	
@@ -176,8 +237,13 @@ public class PlateauController implements Initializable {
 							circle.setCursor(Cursor.DEFAULT);
 						}
 					} else {
+						Trap trap = p.getTrap();
 						circle.setFill(Color.WHITE);
 						circle.setCursor(Cursor.DEFAULT);
+						if(trap != null && coords[0] == trap.getX() && coords[1] == trap.getY()) {
+							circle.setStroke(Color.RED);
+							circle.setStrokeWidth(2);
+						}
 					}
 			}
 		}
@@ -218,12 +284,39 @@ public class PlateauController implements Initializable {
 				pions.getChildren().add(circle);
 			}
 		} else {
-			pions.getChildren().add(new Label("Plus aucun pion � placer"));
+			pions.getChildren().add(new Label("Plus aucun pion � placer"));
 		}
-	}
-	
-	public void handle(MouseEvent event) {
 		
+		if(p.canPlaceTrap()) {
+			Circle circle = new Circle(25.0, Color.WHITE);
+			circle.setStroke(Color.RED);
+			circle.setStrokeWidth(5);
+			circle.setCursor(Cursor.OPEN_HAND);
+			circle.setOnDragDetected(mouseEvent -> {
+				final Dragboard dragBroard = circle.startDragAndDrop(TransferMode.COPY);
+				final ClipboardContent content = new ClipboardContent();
+				content.putString("drag circle");
+				
+				DataFormat paintFormat = DataFormat.lookupMimeType(Paint.class.getName());
+	            paintFormat = (paintFormat == null) ? new DataFormat(Paint.class.getName()) : paintFormat;
+	            
+	            final Color color = (Color) circle.getFill(); 
+	            final int red = (int) (255 * color.getRed()); 
+	            final int green = (int) (255 * color.getGreen()); 
+	            final int blue = (int) (255 * color.getBlue()); 
+	            final int alpha = (int) (255 * color.getOpacity()); 
+	            final int argb = alpha << 24 | red << 16 | green << 8 | blue << 0; 
+	            content.put(paintFormat, argb);
+	            
+				final WritableImage capture = circle.snapshot(null, null); 
+	            content.putImage(capture);
+	            dragBroard.setContent(content);
+	            mouseEvent.consume();
+			});
+		pieges.getChildren().add(circle);
+		} else {
+			pieges.getChildren().add(new Label("Plus de piège à placer"));
+		}
 	}
 	
 }
