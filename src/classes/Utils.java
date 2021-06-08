@@ -54,7 +54,7 @@ public class Utils {
 	public static int entrerInt(int borneInf, int borneSup) {
 		System.out.print("Choix : ");
 		String xStr = "";
-		while(xStr.equals("")) {
+		while(xStr.equals("") || !isNumeric(xStr)) {
 			xStr = scanner.nextLine();
 		}
 		int x = Integer.parseInt(xStr);
@@ -64,6 +64,15 @@ public class Utils {
 			x = scanner.nextInt();
 		}
 		return x;
+	}
+	
+	private static boolean isNumeric(String str) {
+		try {
+			Integer.parseInt(str);
+		} catch(Exception e) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**Eteint le programme*/
