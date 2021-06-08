@@ -103,9 +103,11 @@ public class PlateauController implements Initializable {
 						        if(Horizons.plateau.squaresNeighbors(coords[0]+1, coords[1]+1, originCoords[0]+1, originCoords[1]+1)) {
 						        	Color originColor = (Color) circleOrigin.getFill();
 						        	circle.setFill(new Color(originColor.getRed(), originColor.getGreen(), originColor.getBlue(), 0.5));
+						        	dragEvent.acceptTransferModes(TransferMode.COPY);
 						        }
+					        } else {
+					        	
 					        }
-				        	dragEvent.acceptTransferModes(TransferMode.COPY);
 					    }
 					    dragEvent.consume();
 					});
@@ -237,7 +239,7 @@ public class PlateauController implements Initializable {
 							circle.setCursor(Cursor.DEFAULT);
 						}
 					} else {
-						Trap trap = p.getTrap();
+						Trap trap = Horizons.plateau.getSquareTrap(coords[0], coords[1]);
 						circle.setFill(Color.WHITE);
 						circle.setCursor(Cursor.DEFAULT);
 						if(trap != null && coords[0] == trap.getX() && coords[1] == trap.getY()) {

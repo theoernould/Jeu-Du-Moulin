@@ -183,6 +183,10 @@ public class BoardGame {
 		return squares[x][y].getPlayer();
 	}
 	
+	public Trap getSquareTrap(int x, int y) {
+		return squares[x][y].getTrap();
+	}
+	
 	public boolean movePawnAbsolute(int x1, int y1, int x2, int y2) {
 		return squares[x1][y1].moveTo(squares[x2][y2]);
 	}

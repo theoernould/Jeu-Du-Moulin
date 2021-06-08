@@ -68,6 +68,10 @@ public class Square {
 		return trap != null;
 	}
 	
+	public Trap getTrap() {
+		return trap;
+	}
+	
 	/**Affichage des coordonn�es d'un pion d'un joueur */
 	public String toString() {
 		return "(" + X + ", " + Y + ") " + player;
