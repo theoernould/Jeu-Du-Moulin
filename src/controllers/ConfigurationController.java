@@ -44,7 +44,6 @@ public class ConfigurationController implements Initializable {
 		String[] options = boardgameName.replace("plateau_", "").split("_");
 		Horizons.plateau = new BoardGame(Integer.parseInt(options[0]),Integer.parseInt(options[1]));
 		Horizons.joueurs = new ArrayList<Player>();
-		System.out.println(generation.isSelected());
 		int nbPlayers = 0;
 		for(HBox box : listeJoueurs.getItems()) {
 			Node labelNode = box.getChildren().get(0);
@@ -80,7 +79,7 @@ public class ConfigurationController implements Initializable {
 		Label triangulaire = new Label("Triangulaire");
 			triangulaire.setId("plateau_3_3");
 			triangulaire.setTextFill(Color.BLACK);
-		Label carre = new Label("Carré");
+		Label carre = new Label("CarrÃ©");
 			carre.setId("plateau_4_3");
 			carre.setTextFill(Color.BLACK);
 		listeTypes.getItems().setAll(triangulaire, carre);

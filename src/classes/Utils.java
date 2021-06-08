@@ -52,27 +52,22 @@ public class Utils {
 	* @param borneInf Borne inférieure
 	* @param borneSup Borne supérieure*/
 	public static int entrerInt(int borneInf, int borneSup) {
-		System.out.print("Choix : ");
 		String xStr = "";
-		while(xStr.equals("") || !isNumeric(xStr)) {
-			xStr = scanner.nextLine();
-		}
-		int x = Integer.parseInt(xStr);
-		while(!Utils.isBetween(x,borneInf, borneSup)) {
-			System.out.println("Nombre invalide !");
+		while(xStr.equals("") || !isNumeric(xStr) || (isNumeric(xStr) && !isBetween(Integer.parseInt(xStr), borneInf, borneSup))) {
 			System.out.print("Choix : ");
-			x = scanner.nextInt();
+			xStr = scanner.nextLine().trim();
 		}
-		return x;
+		return Integer.parseInt(xStr);
 	}
 	
 	private static boolean isNumeric(String str) {
 		try {
 			Integer.parseInt(str);
+			return true;
 		} catch(Exception e) {
+			System.out.println("Nombre invalide");
 			return false;
 		}
-		return true;
 	}
 	
 	/**Eteint le programme*/

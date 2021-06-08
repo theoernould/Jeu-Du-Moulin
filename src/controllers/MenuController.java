@@ -19,7 +19,7 @@ public class MenuController implements Initializable {
 	}
 	
 	public void regles() throws IOException {
-		Horizons.setSceneFromFile("regles", "Règles");
+		Horizons.setSceneFromFile("regles", "RÃ¨gles");
 	}
 	
 	public void quitter() {

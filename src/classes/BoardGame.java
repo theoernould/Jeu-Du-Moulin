@@ -215,10 +215,7 @@ public class BoardGame {
 			System.out.println("--------");
 		//}*/
 		if(canMove(x1,y1,x2,y2,p)) {
-			System.out.println("actualPlayer : " + p);
 			Trap trap = getSquareTrap(x2, y2);
-			System.out.println("trap ? " + trap != null);
-			if(trap != null) System.out.println("player : " + trap.getPlayer());
 			if(trap != null && trap.getPlayer() != p) {
 				int x;
 				int y;
@@ -226,7 +223,6 @@ public class BoardGame {
 					x = Utils.random(0,getNbShapes());
 					y = Utils.random(0,getNbSides()*2);
 				} while(!pawnExist(x, y) || squares[x][y].squareOccuped() || (x == x2 || y == y2) || squares[x][y].isTrapped());
-				System.out.println("mouvement trap : " + x1 + " " + y1 + " -> " + x + " " + y);
 				return movePawnAbsolute(x1, y1, x, y);
 			} else {
 				return movePawnAbsolute(x1, y1, x2, y2);

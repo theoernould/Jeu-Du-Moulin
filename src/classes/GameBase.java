@@ -233,7 +233,6 @@ public class GameBase {
 						String[] coords = options[i].split(":");
 						int x = Integer.parseInt(coords[0])-1;
 						int y = Integer.parseInt(coords[1])-1;
-						System.out.println("pion placé en : " + x + " " + y);
 						plateau.placePawn(x, y, p);
 					}
 				}
@@ -324,26 +323,11 @@ public class GameBase {
 		Thread.sleep(1000);
 
 		Utils.progressivePrint("Veuillez entrer le nombre de côtés des formes du plateau : \n", DELAY);
-		while(erreur1) {
-			try{
-				nbSides = Integer.parseInt(Utils.scanner.nextLine());
-			}catch(InputMismatchException e) {
-				System.out.println("Entrée invalide !");
-			}
-			erreur1 = false;
-		}
+		nbSides = Utils.entrerInt(1, 1000);
 		
 
 		Utils.progressivePrint("Veuillez entrer le nombre de formes du plateau : \n", DELAY);
-
-		while(erreur2){
-			try{
-				nbShapes = Integer.parseInt(Utils.scanner.nextLine());
-			}catch(InputMismatchException e){
-				System.out.println("Entrée invalide !");
-			}
-			erreur2 = false;
-		}
+		nbShapes = Utils.entrerInt(1, 1000);
 		
 
 		return new BoardGame(nbSides, nbShapes);

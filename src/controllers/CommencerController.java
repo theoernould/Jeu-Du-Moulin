@@ -9,7 +9,6 @@ import javafx.fxml.Initializable;
 
 public class CommencerController implements Initializable {
 	public void commencer() throws IOException {
-		System.out.println("OK");
 		Horizons.setSceneFromFile("menu", "Menu");
 	}
 

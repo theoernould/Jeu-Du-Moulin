@@ -96,6 +96,7 @@ public class PlateauController implements Initializable {
 					    final Dragboard dragBroard = dragEvent.getDragboard(); 
 					    DataFormat paintFormat = DataFormat.lookupMimeType(Paint.class.getName()); 
 					    paintFormat = (paintFormat == null) ? new DataFormat(Paint.class.getName()) : paintFormat;
+					    System.out.println();
 					    if (dragEvent.getGestureSource() != circle && dragBroard.hasContent(paintFormat) && ((Node) dragEvent.getGestureSource()).getParent().getId() != "blocages" && Horizons.plateau.getSquarePlayer(coords[0], coords[1]) == null) { 
 					    	Circle circleOrigin = (Circle) dragEvent.getGestureSource();
 					    	String parentId = circleOrigin.getParent().getId();
@@ -160,13 +161,11 @@ public class PlateauController implements Initializable {
 					    				}
 					    			} else if(id.equals("pieges")) {
 					    				if(Horizons.plateau.placeTrap(coords[0], coords[1], actualPlayer)) {
-					    					System.out.println("piege sur le joueur ? " + actualPlayer.canPlaceTrap());
 					    					play();
 					    				}
 					    			}
 					    		} else if(parentNode instanceof Pane) {
 					    			int[] originCoords = getCoordsFromCircle(circleOrigin);
-					    			System.out.println("mouvement player : " + actualPlayer);
 					    			if(Horizons.plateau.movePawn(originCoords[0], originCoords[1], coords[0], coords[1], actualPlayer)) {
 					    				play();
 					    			}
@@ -224,7 +223,6 @@ public class PlateauController implements Initializable {
 			} while (!Horizons.plateau.placePawn(rX, rY, iaPlayer));
 		} else {
 			int choice = Utils.random(1, 3);
-			System.out.println("choix IA : " + choice);
 			if(choice == 1 || !iaPlayer.canPlaceTrap()) { // Déplacer pion
 				GameBase.iaMove(Horizons.plateau, iaPlayer);
 			} else if(choice == 2) { // Placer piège
@@ -232,11 +230,9 @@ public class PlateauController implements Initializable {
 					int rX;
 					int rY;
 					do {
-						System.out.println("INFINI");
 						rX = Utils.random(0, Horizons.plateau.getNbShapes());
 						rY = Utils.random(0, Horizons.plateau.getNbSides()*2);
 					} while (!Horizons.plateau.placeTrap(rX, rY, iaPlayer));
-					System.out.println("IA PLACE PIEGE  EN  : " + rX + " " + rY);
 				}
 			} else if(choice == 3) { // Placer blocage d'arc
 				
@@ -270,7 +266,6 @@ public class PlateauController implements Initializable {
 						circle.setFill(Color.WHITE);
 						circle.setCursor(Cursor.DEFAULT);
 						if(trap != null && trap.getPlayer() == actualPlayer) {
-							System.out.println("TRAPTRAPTRAPTRAPTRAP");
 							circle.setStroke(Color.RED);
 							circle.setStrokeWidth(2);
 						} else {
