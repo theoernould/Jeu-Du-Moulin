@@ -102,7 +102,8 @@ public class BoardGame {
 	 * @param s1 case 1
 	 * @param s2 case 2
 	 * @param s3 case 3 */
-    public boolean alignement(Square s1, Square s2, Square s3) {
+    @SuppressWarnings("unused")
+	public boolean alignement(Square s1, Square s2, Square s3) {
        /* if(s1.X==s2.X && s2.X==s3.X){
             if((s1.Y%2==0 && s2.Y%2!=0 && s3.Y%2!=0)){
                 return true;
@@ -118,36 +119,38 @@ public class BoardGame {
         }else{
             return false;
         }*/
-    	System.out.println("check : " + s1 + " " + s2 + " " + s3);
-    	System.out.println("voisins ? " + ( squaresNeighbors(s1.X, s1.Y, s2.X, s2.Y) + "  " +  squaresNeighbors(s2.X, s2.Y, s3.X, s3.Y)));
-    	System.out.println("first ? " + ( (s1.X == s2.X && s2.X == s3.X) && 
-	    						( /*(s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1)*/ (s1.Y + s2.Y + s3.Y) % (nbSides*2) == 0 ) 
-	    				));
-    	System.out.println("second ? " + ( (s1.Y == s2.Y && s2.Y == s3.Y) && 
-	    						( /*(s1.X % 2 == 1) && (s2.X % 2 == 0) && (s3.X % 2 == 1)*/((s1.X % 2) + (s2.X % 2) + (s3.X % 2)) == 2 ) 
-	    				));
-    	System.out.println("deux ? " + (
-	    				( (s1.X == s2.X && s2.X == s3.X) && 
-	    						( /*(s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1)*/ (s1.Y + s2.Y + s3.Y) % (nbSides*2) == 0 ) 
-	    				)
-	    					|| 
-	    				( (s1.Y == s2.Y && s2.Y == s3.Y) && 
-	    						( /*(s1.X % 2 == 1) && (s2.X % 2 == 0) && (s3.X % 2 == 1)*/((s1.X % 2) + (s2.X % 2) + (s3.X % 2)) == 2 ) 
-	    				)
-    				) );
-    	System.out.println("alignement ? " + ( ( (squaresNeighbors(s1.X, s1.Y, s2.X, s2.Y) || squaresNeighbors(s1.X, s1.Y, s3.X, s3.Y)) && (squaresNeighbors(s2.X, s2.Y, s3.X, s3.Y) || squaresNeighbors(s2.X, s2.Y, s1.X, s1.Y)) ) && (
-	    				( (s1.X == s2.X && s2.X == s3.X) && 
-	    						( /*(s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1)*/ (s1.Y + s2.Y + s3.Y) % (nbSides*2) == 0 ) 
-	    				)
-	    					|| 
-	    				( (s1.Y == s2.Y && s2.Y == s3.Y) && 
-	    						( /*(s1.X % 2 == 1) && (s2.X % 2 == 0) && (s3.X % 2 == 1)*/((s1.X % 2) + (s2.X % 2) + (s3.X % 2)) == 2 ) 
-	    				)
-    				) 
-    			));
+    	if(false) {
+        	System.out.println("check : " + s1 + " " + s2 + " " + s3);
+        	System.out.println("voisins ? " + ( squaresNeighbors(s1.X, s1.Y, s2.X, s2.Y) + "  " +  squaresNeighbors(s2.X, s2.Y, s3.X, s3.Y)));
+        	System.out.println("first ? " + ( (s1.X == s2.X && s2.X == s3.X) && 
+    	    						( /*(s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1)*/ (s1.Y + s2.Y + s3.Y) % (nbSides*2) == 0 ) 
+    	    				));
+        	System.out.println("second ? " + ( (s1.Y == s2.Y && s2.Y == s3.Y) && 
+    	    						( /*(s1.X % 2 == 1) && (s2.X % 2 == 0) && (s3.X % 2 == 1)*/((s1.X % 2) + (s2.X % 2) + (s3.X % 2)) == 2 ) 
+    	    				));
+        	System.out.println("deux ? " + (
+    	    				( (s1.X == s2.X && s2.X == s3.X) && 
+    	    						( /*(s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1)*/ (s1.Y + s2.Y + s3.Y) % (nbSides*2) == 0 ) 
+    	    				)
+    	    					|| 
+    	    				( (s1.Y == s2.Y && s2.Y == s3.Y) && 
+    	    						( /*(s1.X % 2 == 1) && (s2.X % 2 == 0) && (s3.X % 2 == 1)*/((s1.X % 2) + (s2.X % 2) + (s3.X % 2)) == 2 ) 
+    	    				)
+        				) );
+        	System.out.println("alignement ? " + ( ( (squaresNeighbors(s1.X, s1.Y, s2.X, s2.Y) || squaresNeighbors(s1.X, s1.Y, s3.X, s3.Y)) && (squaresNeighbors(s2.X, s2.Y, s3.X, s3.Y) || squaresNeighbors(s2.X, s2.Y, s1.X, s1.Y)) ) && (
+    	    				( (s1.X == s2.X && s2.X == s3.X) && 
+    	    						( /*(s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1)*/ (s1.Y + s2.Y + s3.Y) % (nbSides*2) == 0 ) 
+    	    				)
+    	    					|| 
+    	    				( (s1.Y == s2.Y && s2.Y == s3.Y) && 
+    	    						( /*(s1.X % 2 == 1) && (s2.X % 2 == 0) && (s3.X % 2 == 1)*/((s1.X % 2) + (s2.X % 2) + (s3.X % 2)) == 2 ) 
+    	    				)
+        				) 
+        			));
+    	}
     	return ( ( (squaresNeighbors(s1.X, s1.Y, s2.X, s2.Y) || squaresNeighbors(s1.X, s1.Y, s3.X, s3.Y)) && (squaresNeighbors(s2.X, s2.Y, s3.X, s3.Y) || squaresNeighbors(s2.X, s2.Y, s1.X, s1.Y)) ) && (
 	    				( (s1.X == s2.X && s2.X == s3.X) && 
-	    						( /*(s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1)*/ (s1.Y + s2.Y + s3.Y) % 6 == 0 ) 
+	    						( /*(s1.Y % 2 == 1) && (s2.Y % 2 == 0) && (s3.Y % 2 == 1)*/ (s1.Y + s2.Y + s3.Y) % 6 == 0 || (s1.Y + s2.Y + s3.Y) % 8 == 0 ) 
 	    				)
 	    					|| 
 	    				( (s1.Y == s2.Y && s2.Y == s3.Y) && 
@@ -173,7 +176,7 @@ public class BoardGame {
 	}
 	
 	public boolean placeTrap(int x, int y, Player p) {
-		if (pawnExist(x, y) && !squares[x][y].squareOccuped() && !squares[x][y].isTrapped() && p.canPlaceTrap()) {
+		if (pawnExist(x, y) && !squares[x][y].squareOccuped() && !squares[x][y].isTrapped()) {
 			squares[x][y].placeTrap(p);
 			return true;
 		} else return false;
@@ -189,6 +192,10 @@ public class BoardGame {
 	
 	public boolean movePawnAbsolute(int x1, int y1, int x2, int y2) {
 		return squares[x1][y1].moveTo(squares[x2][y2]);
+	}
+	
+	private boolean canMove(int x1, int y1, int x2, int y2, Player p) {
+		return pawnExist(x1, y1) && pawnExist(x2,y2) && squares[x1][y1].squareOccuped() && !squares[x2][y2].squareOccuped() && squaresNeighbors(x1+1, y1+1, x2+1, y2+1) && squares[x1][y1].playerIs(p);
 	}
 	
 	public boolean movePawn(int x1, int y1, int x2, int y2, Player p) {
@@ -207,9 +214,23 @@ public class BoardGame {
 			if(pawnExist(x1,y1) && pawnExist(x2,y2)) System.out.println("voisins ? " + squaresNeighbors(x1+1, y1+1, x2+1, y2+1));
 			System.out.println("--------");
 		//}*/
-		if( pawnExist(x1, y1) && pawnExist(x2,y2) && squares[x1][y1].squareOccuped() && !squares[x2][y2].squareOccuped() && squaresNeighbors(x1+1, y1+1, x2+1, y2+1) && squares[x1][y1].playerIs(p)) {
-			//System.out.println("move absolute");
-			return movePawnAbsolute(x1, y1, x2, y2);
+		if(canMove(x1,y1,x2,y2,p)) {
+			System.out.println("actualPlayer : " + p);
+			Trap trap = getSquareTrap(x2, y2);
+			System.out.println("trap ? " + trap != null);
+			if(trap != null) System.out.println("player : " + trap.getPlayer());
+			if(trap != null && trap.getPlayer() != p) {
+				int x;
+				int y;
+				do {
+					x = Utils.random(0,getNbShapes());
+					y = Utils.random(0,getNbSides()*2);
+				} while(!pawnExist(x, y) || squares[x][y].squareOccuped() || (x == x2 || y == y2) || squares[x][y].isTrapped());
+				System.out.println("mouvement trap : " + x1 + " " + y1 + " -> " + x + " " + y);
+				return movePawnAbsolute(x1, y1, x, y);
+			} else {
+				return movePawnAbsolute(x1, y1, x2, y2);
+			}
 		} else return false;
 	}
 	
@@ -219,7 +240,7 @@ public class BoardGame {
 		System.out.println(( y1 == y2 && Math.abs(x2 - x1) == 1 && y1 % 2 == 0 && y2 % 2 == 0 ));
 		System.out.println( x1 == x2 && (Math.abs( ( y2 % (nbSides * 2) ) - ( y1 % (nbSides * 2) ) ) == 1) );
 		System.out.println(Math.abs( ( y2 % (nbSides * 2) ) - ( y1 % (nbSides * 2) ) ));*/
-		System.out.println();
+		//System.out.println();
 		return ( y1 == y2 && Math.abs(x2 - x1) == 1 && y1 % 2 == 0 && y2 % 2 == 0 ) || ( x1 == x2 && ( Math.abs( ( y2 % (nbSides * 2) ) - ( y1 % (nbSides * 2))) == 1 || Math.abs( ( y2 % (nbSides * 2) ) - ( y1 % (nbSides * 2))) == (nbSides * 2 - 1)) );
 	}
 	
@@ -263,7 +284,9 @@ public class BoardGame {
 					int alphabetIndex = ((int) (car - 'A'));
 					int x = (int) Math.ceil(alphabetIndex/(nbSides*2));
 					int y = alphabetIndex % (nbSides*2);
-					line = line.replace("" + car, "" + squares[x][y].getPlayerNumber());
+					Trap trap = GameBase.joueurActuel.getTrap();
+					if(trap != null && trap.getX() == x && trap.getY() == y) line = line.replace("" + car, "X");
+					else line = line.replace("" + car, "" + squares[x][y].getPlayerNumber());
 				}
 			}
 			display.append(line + "\t" + linesCoords.get(cpt) + "\n");

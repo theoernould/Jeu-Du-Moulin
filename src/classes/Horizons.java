@@ -34,10 +34,8 @@ public class Horizons extends Application {
 	* @param title Affichage du nom de la fen�tre
 	* @throws IOException */
 	public static void setSceneFromFile(String fileName, String title) throws IOException {
-		System.out.println("appel");
 		FXMLLoader loader = new FXMLLoader();
 		URL fxmlFileUrl = Horizons.class.getResource(fileName + ".fxml");
-		System.out.println("OK");
 		if (fxmlFileUrl == null) {
 			System.out.println("Impossible de charger le fichier fxml");
 			System.exit(-1);

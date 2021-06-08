@@ -6,7 +6,7 @@ public enum OptionsMenu {
 	GRAPHIQUE("Graphique"),
 	TEXTUEL("Textuel"),
 		JOUER("Jouer"),
-			CONTINUER("Continuer la dernière partie"),
+			CONTINUER("Sauvegardes"),
 			NOUVELLE("Commencer une nouvelle partie"),
 				RIEN("A partir de rien"),
 				CONFIGURATION("A partir d'une configuration pré-définie"),

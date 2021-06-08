@@ -97,16 +97,25 @@ public class PlateauController implements Initializable {
 					    DataFormat paintFormat = DataFormat.lookupMimeType(Paint.class.getName()); 
 					    paintFormat = (paintFormat == null) ? new DataFormat(Paint.class.getName()) : paintFormat;
 					    if (dragEvent.getGestureSource() != circle && dragBroard.hasContent(paintFormat) && ((Node) dragEvent.getGestureSource()).getParent().getId() != "blocages" && Horizons.plateau.getSquarePlayer(coords[0], coords[1]) == null) { 
-					        if(!((Node) dragEvent.getGestureSource()).getParent().getId().equals("pieges")) {
-						    	Circle circleOrigin = (Circle) dragEvent.getGestureSource();
+					    	Circle circleOrigin = (Circle) dragEvent.getGestureSource();
+					    	String parentId = circleOrigin.getParent().getId();
+					    	if(parentId.equals("plateau")) {
 						        int[] originCoords = getCoordsFromCircle(circleOrigin);
 						        if(Horizons.plateau.squaresNeighbors(coords[0]+1, coords[1]+1, originCoords[0]+1, originCoords[1]+1)) {
 						        	Color originColor = (Color) circleOrigin.getFill();
 						        	circle.setFill(new Color(originColor.getRed(), originColor.getGreen(), originColor.getBlue(), 0.5));
 						        	dragEvent.acceptTransferModes(TransferMode.COPY);
 						        }
-					        } else {
-					        	
+					        } else if(parentId.equals("pieges")){
+					        	if(actualPlayer.canPlaceTrap()) {
+						        	circle.setStroke(new Color(1, 0, 0, 0.5));
+						        	circle.setStrokeWidth(2);
+						        	dragEvent.acceptTransferModes(TransferMode.COPY);
+					        	}
+					        } else if(parentId.equals("pions")) {
+					        	Color originColor = (Color) circleOrigin.getFill();
+					        	circle.setFill(new Color(originColor.getRed(), originColor.getGreen(), originColor.getBlue(), 0.5));
+					        	dragEvent.acceptTransferModes(TransferMode.COPY);
 					        }
 					    }
 					    dragEvent.consume();
@@ -115,41 +124,51 @@ public class PlateauController implements Initializable {
 						final Dragboard dragBroard = dragEvent.getDragboard(); 
 					    DataFormat paintFormat = DataFormat.lookupMimeType(Paint.class.getName()); 
 					    paintFormat = (paintFormat == null) ? new DataFormat(Paint.class.getName()) : paintFormat;
-					    System.out.println(((Node) dragEvent.getGestureSource()).getParent().getId());
-					    if (dragEvent.getGestureSource() != circle && dragBroard.hasContent(paintFormat) && !((Node) dragEvent.getGestureSource()).getParent().getId().equals("pieges") && ((Node) dragEvent.getGestureSource()).getParent().getId() != "blocages" && Horizons.plateau.getSquarePlayer(coords[0], coords[1]) == null) { 
-					        System.out.println("entered : " + ((Node) dragEvent.getGestureSource()).getParent().getId());
+					    if (dragEvent.getGestureSource() != circle && dragBroard.hasContent(paintFormat) && Horizons.plateau.getSquarePlayer(coords[0], coords[1]) == null) {
 					    	Circle circleOrigin = (Circle) dragEvent.getGestureSource();
-					        int[] originCoords = getCoordsFromCircle(circleOrigin);
-					        if(Horizons.plateau.squaresNeighbors(coords[0]+1, coords[1]+1, originCoords[0]+1, originCoords[1]+1)) {
+				    		Node parentNode = circleOrigin.getParent();
+				    		Trap trap = Horizons.plateau.getSquareTrap(coords[0], coords[1]);
+				    		if(trap == null || (trap != null && trap.getPlayer() != actualPlayer)) {
 					        	circle.setFill(Color.WHITE);
-					        }
+					        	circle.setStroke(Color.BLACK);
+					        	circle.setStrokeWidth(1);
+				    		}
+				    		if(parentNode != null) {
+				    			String id = parentNode.getId().trim();
+				    			if(id.equals("plateau")) {
+							        int[] originCoords = getCoordsFromCircle(circleOrigin);
+							        if(Horizons.plateau.squaresNeighbors(coords[0]+1, coords[1]+1, originCoords[0]+1, originCoords[1]+1)) {
+							        	circle.setFill(Color.WHITE);
+							        }
+				    			} else {
+				    				
+				    			}
+				    		}
 					    }
 					    dragEvent.consume();
 					});
 					circle.setOnDragDropped(dragEvent -> { 
-						System.out.println("DROPPED");
 					    boolean success = false; 
 					    try {
 					    	Circle circleOrigin = (Circle) dragEvent.getGestureSource();
 					    		Node parentNode = circleOrigin.getParent();
 				    			String id = parentNode.getId();
 					    		if(parentNode instanceof FlowPane) {
-					    			System.out.println("entrée ici");
 					    			if(id.equals("pions")) {
 					    				if(Horizons.plateau.placePawn(coords[0], coords[1], actualPlayer)) {
 							    			play();
 					    				}
 					    			} else if(id.equals("pieges")) {
-					    				System.out.println("drop");
 					    				if(Horizons.plateau.placeTrap(coords[0], coords[1], actualPlayer)) {
+					    					System.out.println("piege sur le joueur ? " + actualPlayer.canPlaceTrap());
 					    					play();
 					    				}
 					    			}
 					    		} else if(parentNode instanceof Pane) {
 					    			int[] originCoords = getCoordsFromCircle(circleOrigin);
+					    			System.out.println("mouvement player : " + actualPlayer);
 					    			if(Horizons.plateau.movePawn(originCoords[0], originCoords[1], coords[0], coords[1], actualPlayer)) {
 					    				play();
-					    				winTest();
 					    			}
 					    		}
 					        success = true; 
@@ -176,23 +195,21 @@ public class PlateauController implements Initializable {
 	}
 	
 	private void play() throws IOException {
-		Player nextPlayer = it.next();
-		if(nextPlayer.isIA()) playIA(nextPlayer);
-		if(Horizons.plateau.gameWon(Horizons.joueurs) != null) 
-		displayPlayer(it.next());
     	refreshBoardGame();
 		GameBase.saveGame(Horizons.plateau, Horizons.joueurs);
-	}
-	
-	private void winTest() throws IOException {
-		Horizons.winner = Horizons.plateau.gameWon(Horizons.joueurs);
-		if(Horizons.winner == null) {
-			play();
+		if(Horizons.plateau.gameWon(Horizons.joueurs) == null) {
+			Player nextPlayer = it.next();
+			if(nextPlayer.isIA()) {
+				playIA(nextPlayer);
+				displayPlayer(it.next());
+			}
+			else displayPlayer(nextPlayer);
+	    	refreshBoardGame();
 		} else {
 	    	refreshBoardGame();
     		File saveFile = new File(Utils.dir + "saves/" + Horizons.plateau.getSaveName() + ".txt");
 			saveFile.delete();
-    		Horizons.setSceneFromFile("victoire", "Victoire");
+    		Horizons.setSceneFromFile("commencer", "Victoire");
 		}
 	}
 	
@@ -204,13 +221,23 @@ public class PlateauController implements Initializable {
 			do {
 				rX = Utils.random(0, Horizons.plateau.getNbShapes());
 				rY = Utils.random(0, Horizons.plateau.getNbSides()*2);
-			} while (Horizons.plateau.placePawn(rX, rY, iaPlayer));
+			} while (!Horizons.plateau.placePawn(rX, rY, iaPlayer));
 		} else {
-			int choice = 1;//Utils.random(1, 4);
-			if(choice == 1) { // Déplacer pion
+			int choice = Utils.random(1, 3);
+			System.out.println("choix IA : " + choice);
+			if(choice == 1 || !iaPlayer.canPlaceTrap()) { // Déplacer pion
 				GameBase.iaMove(Horizons.plateau, iaPlayer);
 			} else if(choice == 2) { // Placer piège
-			
+				if(iaPlayer.canPlaceTrap()) {
+					int rX;
+					int rY;
+					do {
+						System.out.println("INFINI");
+						rX = Utils.random(0, Horizons.plateau.getNbShapes());
+						rY = Utils.random(0, Horizons.plateau.getNbSides()*2);
+					} while (!Horizons.plateau.placeTrap(rX, rY, iaPlayer));
+					System.out.println("IA PLACE PIEGE  EN  : " + rX + " " + rY);
+				}
 			} else if(choice == 3) { // Placer blocage d'arc
 				
 			}
@@ -242,9 +269,13 @@ public class PlateauController implements Initializable {
 						Trap trap = Horizons.plateau.getSquareTrap(coords[0], coords[1]);
 						circle.setFill(Color.WHITE);
 						circle.setCursor(Cursor.DEFAULT);
-						if(trap != null && coords[0] == trap.getX() && coords[1] == trap.getY()) {
+						if(trap != null && trap.getPlayer() == actualPlayer) {
+							System.out.println("TRAPTRAPTRAPTRAPTRAP");
 							circle.setStroke(Color.RED);
 							circle.setStrokeWidth(2);
+						} else {
+							circle.setStroke(Color.BLACK);
+							circle.setStrokeWidth(1);
 						}
 					}
 			}
@@ -286,7 +317,7 @@ public class PlateauController implements Initializable {
 				pions.getChildren().add(circle);
 			}
 		} else {
-			pions.getChildren().add(new Label("Plus aucun pion � placer"));
+			pions.getChildren().add(new Label("Plus aucun pion à placer"));
 		}
 		
 		if(p.canPlaceTrap()) {

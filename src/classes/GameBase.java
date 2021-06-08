@@ -1,4 +1,4 @@
-package classes;
+	package classes;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +22,8 @@ public class GameBase {
 
 	private static final int DELAY = 50;
 	
+	public static Player joueurActuel;
+	
 	
 	/**Boucle de jeu
 	* @param plateau plateau du jeu
@@ -36,6 +38,7 @@ public class GameBase {
 		while(gagnant == null) {
 
 			Player p = it.next();
+			joueurActuel = p;
 			if(!p.canPlacePawn()) GameBase.saveGame(plateau, joueurs);
 			if(!p.isIA()) showPlate(plateau);
 			action(plateau, p);
@@ -75,14 +78,38 @@ public class GameBase {
 					break;
 					
 					case CONTINUER:
-						plateau = GameBase.generateBoardGameFromSave("last_save");
-						if(plateau != null) {
-							joueurs = GameBase.generatePlayersAndPlacePawnsFromSave(plateau, "last_save");
-							if(joueurs.size() >= 2) {
-								Utils.progressivePrint("Chargement de la sauvegarde...\n", GameBase.DELAY);
-								display = false;
+						System.out.println("Liste des sauvegardes : ");
+						
+						int nbSaves = 0;
+						
+						File savesFolder = new File(Utils.dir + "saves");
+						File[] saves = savesFolder.listFiles();
+						for(File file : savesFolder.listFiles()) {
+							System.out.println("\t" + (nbSaves+1) + ". " + file.getName().replace(".txt", "") + " - " + Utils.dateToString(LocalDateTime.parse(Files.readAllLines(file.toPath()).get(0))));
+							nbSaves++;
+						}
+						
+						if(saves.length == 0) {
+							System.out.println("Aucune sauvegarde");
+						}
+						
+						System.out.println("\t" + (nbSaves+1) + ". Retour");
+						
+						int saveNumber = Utils.entrerInt(1, nbSaves+1);
+						
+						if(saveNumber == (nbSaves+1)) menuActuel = Menus.JOUER;
+						else {
+							String saveName = saves[saveNumber-1].getName().replace(".txt", "");
+							
+							plateau = GameBase.generateBoardGameFromSave(saveName);
+							if(plateau != null) {
+								joueurs = GameBase.generatePlayersAndPlacePawnsFromSave(plateau, saveName);
+								if(joueurs.size() >= 2) {
+									Utils.progressivePrint("Chargement de la sauvegarde...\n", GameBase.DELAY);
+									display = false;
+								} else System.out.println("Impossible de charger la dernière sauvegarde.");
 							} else System.out.println("Impossible de charger la dernière sauvegarde.");
-						} else System.out.println("Impossible de charger la dernière sauvegarde.");
+						}
 						break;
 					case NOUVELLE:
 						menuActuel = Menus.NOUVELLE;
@@ -194,6 +221,12 @@ public class GameBase {
 					boolean ia = firstOptions[0].equals("IA");
 					Player p = new Player(firstOptions[0], Integer.parseInt(firstOptions[1]), ia);
 						p.setColor((Color) Paint.valueOf(firstOptions[2]));
+					if(firstOptions.length == 4) {
+						String[] coords = firstOptions[3].split(",");
+						int x = Integer.parseInt(coords[0]);
+						int y = Integer.parseInt(coords[1]);
+						plateau.placeTrap(x, y, p);
+					}
 					joueurs.add(p);
 					
 					for(int i=1;i<options.length;i++) {
@@ -231,24 +264,22 @@ public class GameBase {
 		 */
 			saveFileWriter.println(LocalDateTime.now());
 			saveFileWriter.println(plateau.getNbSides() + ":" + plateau.getNbShapes());
-			System.out.println("good print");
 			for(Player p : joueurs) {
-				saveFileWriter.print(p.getName() + ":" + p.getNumber() + ":" + p.getColor() + ";");
-				System.out.println(p.pawnsLeft());
+				saveFileWriter.print(p.getName() + ":" + p.getNumber() + ":" + p.getColor());
+				Trap trap = p.getTrap();
+				if(trap != null) {
+					saveFileWriter.print(":" + (trap.getX()-1) + "," + (trap.getY()-1));
+				}
+				saveFileWriter.print(";");
 				if(p.pawnsLeft() < 3) {
-					System.out.println("PRINT");
 					Square[] pawns = plateau.playerPawns(p);
-					System.out.println("sortie");
 					for(int i=0;i<(3-p.pawnsLeft());i++) {
-						System.out.println("test");
 						saveFileWriter.print(pawns[i].X + ":" + pawns[i].Y + ";");
 					}
 				}
-				System.out.println("dsqdsqds");
 				saveFileWriter.println();
 			}
 		saveFileWriter.close();
-		System.out.println("closed");
 	}
 	
 	/**Afficher les param�tres du plateau de la partie sauvegard�e
@@ -399,12 +430,14 @@ public class GameBase {
 			}
 		} else {
 			if(!p.isIA()){
-				System.out.println(p + " : " + "que voulez vous faire ?\n\t1. D�placer un pion\n\t2. Placer un piège");
+				System.out.println(p + " : " + "que voulez vous faire ?\n\t1. Déplacer un pion\n\t2. Placer un piège");
 				choice = Utils.entrerInt(1,2);
 				if(choice == 1) {
 					while(!actionMovePawn(plateau,p)) System.out.println("Impossible de déplacer le pion !");
 				} else if(choice == 2) {
-					while(!actionPlaceTrap(plateau, p)) System.out.println("Impossible de placer le piège !");
+					if(p.canPlaceTrap()) {
+						while(!actionPlaceTrap(plateau, p)) System.out.println("Impossible de placer le piège !");
+					}
 				}
 			}else{
 				Utils.progressivePrint("Au tour de l'IA de jouer !\n", GameBase.DELAY);

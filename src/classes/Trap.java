@@ -27,4 +27,8 @@ public class Trap {
 	public int getY() {
 		return Y;
 	}
+	
+	public Player getPlayer() {
+		return p;
+	}
 }

@@ -2,8 +2,10 @@ package tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +28,7 @@ class allTest {
 		assertTrue(terrain.squaresNeighbors(1,1,1,6));
 		assertTrue(terrain.squaresNeighbors(1,6,1,1));//comparer dans les 2 sens
 		assertFalse(terrain.squaresNeighbors(1,6,1,2));//qui marche pas : 1.6 et 1.2
-		// carré :
+		// carrï¿½ :
 		assertTrue(terrain.squaresNeighbors(1,1,1,8));
 		assertTrue(terrain.squaresNeighbors(1,8,1,1));//comparer dans les 2 sens
 		assertFalse(terrain.squaresNeighbors(1,8,1,2));//qui marche pas : 1.6 et 1.2
@@ -52,7 +54,7 @@ class allTest {
 	public void PlayerTest() {
 		Player testp = new Player();
 		testp.placePawn();
-		assertTrue(testp.getPlacedPawn()>0);
+		assertEquals(testp.getPlacedPawn(),0);
 	}
 
 	/**Test de la classe Utils*/
@@ -70,16 +72,30 @@ class allTest {
 		assertFalse(testr > 100);
 	}
 
-	/**Test de la condition de victoire*/
+	/**Test de la condition de victoire
+	* @throws IOException */
 	@Test
-	public void WinTest() {
+	public void WinTest() throws IOException{
 		//test condition de victoire
+		BoardGame terrain = new BoardGame(3,3);
+		Player j1 = new Player("J1",false);
+		terrain.placePawn(1, 1, j1);
+		terrain.placePawn(1, 2, j1);
+		terrain.placePawn(1, 3, j1);
+		Player j2 = new Player("J2",false);
+		terrain.placePawn(3, 2, j2);
+		terrain.placePawn(3, 3, j2);
+		terrain.placePawn(3, 4, j2);
+		ArrayList<Player> players = new ArrayList<Player>();
+		players.add(j1);
+		players.add(j2);
+		assertEquals(terrain.gameWon(players),j1);
 	}
 
-	/**Test des pièges*/
+	/**Test des piï¿½ges*/
 	@Test
 	public void TrapTest(){
-		//test des pièges
+		//test des piï¿½ges
 	}
 
 }

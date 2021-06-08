@@ -30,10 +30,12 @@ public class SauvegardesController implements Initializable {
 	
 	public void supprimer() {
 		Label item = liste.getSelectionModel().getSelectedItem();
-		String saveName = item.getId();
-		File saveFile = new File(Utils.dir + "saves/" + saveName);
-		saveFile.delete();
-		liste.getItems().remove(item);
+		if(item != null) {
+			String saveName = item.getId();
+			File saveFile = new File(Utils.dir + "saves/" + saveName);
+			saveFile.delete();
+			liste.getItems().remove(item);
+		}
 	}
 	
 	public void retour() throws IOException {

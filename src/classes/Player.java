@@ -71,7 +71,7 @@ public class Player {
 		return trap;
 	}
 	
-	/**Retourne combien de pion il reste � placer pour le joueur*/
+	/**Retourne combien de pion il reste à placer pour le joueur*/
 	public int pawnsLeft() {
 		return PAWNS_NUMBER - placedPawns;
 	}

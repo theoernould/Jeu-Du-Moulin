@@ -125,7 +125,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <FlowPane id="pions" fx:id="pions" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" />
+                  <FlowPane id="pions" fx:id="pions" alignment="CENTER" hgap="5.0" prefHeight="200.0" prefWidth="200.0" vgap="5.0" />
                </children>
             </VBox>
             <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
@@ -135,10 +135,10 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <FlowPane id="pieges" fx:id="pieges" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" />
+                  <FlowPane id="pieges" fx:id="pieges" alignment="CENTER" hgap="5.0" prefHeight="200.0" prefWidth="200.0" vgap="5.0" />
                </children>
             </VBox>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" spacing="10.0" visible="false">
                <children>
                   <Label text="Blocages d'arc">
                      <font>
