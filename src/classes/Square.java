@@ -68,6 +68,13 @@ public class Square {
 		return trap != null;
 	}
 	
+	public void roundPass() {
+		if(isTrapped()) {
+			trap.roundPass();
+			if(trap.isTrapDead()) trap = null;
+		}
+	}
+	
 	public Trap getTrap() {
 		return trap;
 	}

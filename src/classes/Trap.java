@@ -17,7 +17,7 @@ public class Trap {
 	}
 	
 	public boolean isTrapDead() {
-		return roundLeft == 0;
+		return roundLeft <= 0;
 	}
 	
 	public int getX() {

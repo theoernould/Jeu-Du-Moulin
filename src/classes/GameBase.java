@@ -39,6 +39,7 @@ public class GameBase {
 
 			Player p = it.next();
 			joueurActuel = p;
+			for(Square s : plateau.playerPawns(p)) s.roundPass();
 			if(!p.canPlacePawn()) GameBase.saveGame(plateau, joueurs);
 			if(!p.isIA()) showPlate(plateau);
 			action(plateau, p);

@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -30,8 +31,8 @@ public class Horizons extends Application {
 	}
 	
 	/**Change la sc�ne de l'interface graphique
-	* @param fileName Nom de la sc�ne
-	* @param title Affichage du nom de la fen�tre
+	* @param fileName Nom de la scène
+	* @param title Affichage du nom de la fenètre
 	* @throws IOException */
 	public static void setSceneFromFile(String fileName, String title) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
@@ -46,6 +47,7 @@ public class Horizons extends Application {
 		Scene scene = new Scene(root);
 		mainStage.setScene(scene);
 		mainStage.setTitle("LineUp3 - " + title);
+		mainStage.getIcons().add(new Image(Horizons.class.getResourceAsStream("jeu_moulins.png")));
 	}
 
 	/**Choix du type d'affichage pour une partie
